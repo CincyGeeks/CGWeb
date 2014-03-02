@@ -1,0 +1,57 @@
+﻿@model CincyGeeksWebsite.Models.Administrative.RoleManagementModel
+
+@{
+    ViewBag.Title = "MangeUserRoles";
+    ViewBag.Message = "Are you sure dude?";
+}
+
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            <hgroup class="title">
+                <h1>@ViewBag.Title.</h1>
+                <h2>@ViewBag.Message</h2>
+            </hgroup>
+        </div>
+    </section>
+}
+
+<h2>MangeUserRoles</h2>
+@using (Html.BeginForm("ManageUserRoles", "Administration", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.UserId)
+    <fieldset>
+        <legend>Roles</legend>
+        <ol>
+            @if(User.IsInRole("Root")){
+            <li>
+                @Html.CheckBoxFor(m => m.Root)
+                @Html.LabelFor(m => m.Root, new { @class = "checkbox" })
+            </li>
+            }
+            <li>
+                @Html.CheckBoxFor(m => m.Administrator)
+                @Html.LabelFor(m => m.Administrator, new { @class = "checkbox" })
+            </li>
+            <li>
+                @Html.CheckBoxFor(m => m.Moderator)
+                @Html.LabelFor(m => m.Moderator, new { @class = "checkbox" })
+            </li>
+            <li>
+                @Html.CheckBoxFor(m => m.User)
+                @Html.LabelFor(m => m.User, new { @class = "checkbox" })
+            </li>
+            <li>
+                @Html.CheckBoxFor(m => m.Announcer)
+                @Html.LabelFor(m => m.Announcer, new { @class = "checkbox" })
+            </li>
+        </ol>
+        @if (ViewBag.SaveMessage != null)
+        {
+            <label style="color:red;">@ViewBag.SaveMessage</label>
+        }
+        <input type="submit" value="Save" />
+        @Html.ActionLink("Back...", "UserDashboard")
+    </fieldset>
+}

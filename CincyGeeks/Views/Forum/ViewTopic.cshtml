@@ -1,0 +1,26 @@
+﻿@model CincyGeeksWebsite.Models.Forum.ViewTopicModel
+
+@{
+    ViewBag.Title = "View Topic";
+}
+
+<h2>View Topic</h2>
+@foreach(CincyGeeksWebsite.Models.Forum.ForumThreadModel thread in Model.Threads)
+{
+    <div>
+        <p>
+        @if (thread.IsSticky)
+        {
+            <b>[STICKY]</b>
+        }
+        @thread.ThreadTitle
+        <small>@Html.ActionLink("View", "ViewThread", new CincyGeeksWebsite.Models.Forum.ForumThreadRequestModel() { ThreadId = thread.ThreadId, CurrentPage = 0})</small>
+        </p>
+        <hr />
+        <p> Created By: @thread.CreatedBy on @thread.CreatedOn </p>
+            @if (!String.IsNullOrEmpty(thread.ModifiedOn))
+            {
+                <p>| Modified On: @thread.ModifiedOn</p>
+            }
+    </div>
+}

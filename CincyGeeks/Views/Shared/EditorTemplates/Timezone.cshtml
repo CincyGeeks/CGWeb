@@ -1,0 +1,12 @@
+﻿@{
+    string selectedSearchValue = "Eastern Standard Time";
+    if (Model != null && !String.IsNullOrEmpty(Model))
+    {
+        selectedSearchValue = Model;
+    }
+    List<SelectListItem> timezones = TimeZoneInfo.GetSystemTimeZones().OrderBy(tz => tz.Id)
+                                                                    .Select(tz => new SelectListItem() { Text = tz.DisplayName, Value = tz.Id, Selected = tz.Id.Equals(selectedSearchValue) ? true : false })
+                                                                    .ToList();    
+}
+@Html.DropDownListFor(m => m, timezones.AsEnumerable())
+

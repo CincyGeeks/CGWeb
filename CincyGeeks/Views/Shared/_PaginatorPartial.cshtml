@@ -1,0 +1,56 @@
+﻿@model CincyGeeksWebsite.Models.Shared.PaginatorPartialModel
+<div style="overflow:auto">
+    <div style="float:left;">
+        @if (Model.FirstPageParamerterObject != null)
+        {
+            @Html.ActionLink("First", Model.ActionName, Model.FirstPageParamerterObject);
+        }
+        else
+        {
+            @Html.Label("First");   
+        }
+    </div>
+    <div style="float:left;">
+        @if (Model.PrevPageParamerterObject != null)
+        {
+            @Html.ActionLink("Prev", Model.ActionName, Model.PrevPageParamerterObject);
+        }
+        else
+        {
+            @Html.Label("Prev");   
+        }
+    </div>
+    @for (int i = 0; i < Model.PageLinkValues.Count(); i++)
+    {
+        <div style="float:left;">
+            @if (Model.PageLinkParameterObjects[i] != null)
+            {
+                @Html.ActionLink(Model.PageLinkValues[i], Model.ActionName, Model.PageLinkParameterObjects[i]);
+            }
+            else
+            {
+                @Html.Label(Model.PageLinkValues[i]);
+            }
+        </div>
+    }
+    <div style="float:left;">
+        @if (Model.NextPageParamerterObject != null)
+        {
+            @Html.ActionLink("Next", Model.ActionName, Model.NextPageParamerterObject);
+        }
+        else
+        {
+            @Html.Label("Next");   
+        }
+    </div>
+    <div style="float:left;">
+        @if (Model.LastPageParamerterObject != null)
+        {
+            @Html.ActionLink("Last", Model.ActionName, Model.LastPageParamerterObject);
+        }
+        else
+        {
+            @Html.Label("Last");   
+        }
+    </div>
+</div>

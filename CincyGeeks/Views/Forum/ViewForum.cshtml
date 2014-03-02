@@ -1,0 +1,18 @@
+﻿@model CincyGeeksWebsite.Models.Forum.ViewForumModel
+
+@{
+    ViewBag.Title = "View Forum";
+}
+
+<h2>ViewForumView</h2>
+@foreach (CincyGeeksWebsite.Models.Forum.ForumTopicModel topic in Model.ForumTopics)
+{
+    <div>
+        <p>@topic.TopicTitle</p>
+        <hr />
+        <p>@topic.TopicDescription</p><br />
+        @Html.ActionLink("View Topic", "ViewTopic", new { topicId = @topic.TopicId })
+        <hr />
+        <small>Created By: @topic.CreatedBy on @topic.CreatedOn</small>
+    </div>
+}

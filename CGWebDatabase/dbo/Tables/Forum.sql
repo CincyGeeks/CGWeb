@@ -1,0 +1,6 @@
+﻿CREATE TABLE [dbo].[Forum]
+(
+	[ForumId] UNIQUEIDENTIFIER NOT NULL PRIMARY KEY DEFAULT NEWID(), 
+    [ForumTitle] NCHAR(128) NOT NULL, 
+    [IsPublic] BIT NOT NULL DEFAULT 0
+)

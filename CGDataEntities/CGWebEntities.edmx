@@ -1,0 +1,822 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="CGWebModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Announcement">
+          <Key>
+            <PropertyRef Name="AnnouncementId" />
+          </Key>
+          <Property Name="AnnouncementId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="CreatedBy" Type="int" Nullable="false" />
+          <Property Name="ModifiedDate" Type="datetime" />
+          <Property Name="ModifiedBy" Type="int" />
+          <Property Name="Title" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Content" Type="text" Nullable="false" />
+          <Property Name="IsPublic" Type="bit" Nullable="false" />
+          <Property Name="RestrictToRole" Type="int" />
+        </EntityType>
+        <EntityType Name="Forum">
+          <Key>
+            <PropertyRef Name="ForumId" />
+          </Key>
+          <Property Name="ForumId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ForumTitle" Type="nchar" MaxLength="128" Nullable="false" />
+          <Property Name="IsPublic" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ForumReply">
+          <Key>
+            <PropertyRef Name="ReplyId" />
+          </Key>
+          <Property Name="ReplyId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ParentThreadId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ReplyContent" Type="text" Nullable="false" />
+          <Property Name="CreatedBy" Type="int" Nullable="false" />
+          <Property Name="CreatedOn" Type="datetime" Nullable="false" />
+          <Property Name="ModifiedOn" Type="datetime" />
+        </EntityType>
+        <EntityType Name="ForumThread">
+          <Key>
+            <PropertyRef Name="ThreadId" />
+          </Key>
+          <Property Name="ThreadId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ForumTopic" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ThreadTitle" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="ThreadContent" Type="text" Nullable="false" />
+          <Property Name="CreatedBy" Type="int" Nullable="false" />
+          <Property Name="CreatedOn" Type="datetime" Nullable="false" />
+          <Property Name="ModifiedOn" Type="datetime" />
+          <Property Name="IsSticky" Type="bit" />
+        </EntityType>
+        <EntityType Name="ForumTopic">
+          <Key>
+            <PropertyRef Name="TopicId" />
+          </Key>
+          <Property Name="TopicId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ForumId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="TopicTitle" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="TopicDescription" Type="text" Nullable="false" />
+          <Property Name="IsPublic" Type="bit" Nullable="false" />
+          <Property Name="CreatedBy" Type="int" Nullable="false" />
+          <Property Name="CreatedOn" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Service">
+          <Key>
+            <PropertyRef Name="ServiceId" />
+          </Key>
+          <Property Name="ServiceId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ServiceName" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Service_Roles">
+          <Key>
+            <PropertyRef Name="ServiceRoleId" />
+          </Key>
+          <Property Name="ServiceRoleId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ServiceId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="RoleId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserProfile">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="56" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="Timezone" Type="nvarchar" MaxLength="56" Nullable="false" />
+          <Property Name="PhoneNumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="SteamHandle" Type="nvarchar" MaxLength="128" />
+          <Property Name="ListInDirectory" Type="bit" Nullable="false" />
+          <Property Name="Signature" Type="nvarchar" MaxLength="1000" />
+          <Property Name="AvatarFileName" Type="nvarchar" MaxLength="64" />
+          <Property Name="BanExpireDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="webpages_Membership">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime" />
+          <Property Name="ConfirmationToken" Type="nvarchar" MaxLength="128" />
+          <Property Name="IsConfirmed" Type="bit" />
+          <Property Name="LastPasswordFailureDate" Type="datetime" />
+          <Property Name="PasswordFailuresSinceLastSuccess" Type="int" Nullable="false" />
+          <Property Name="Password" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="PasswordChangedDate" Type="datetime" />
+          <Property Name="PasswordSalt" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="PasswordVerificationToken" Type="nvarchar" MaxLength="128" />
+          <Property Name="PasswordVerificationTokenExpirationDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="webpages_OAuthMembership">
+          <Key>
+            <PropertyRef Name="Provider" />
+            <PropertyRef Name="ProviderUserId" />
+          </Key>
+          <Property Name="Provider" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="ProviderUserId" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="webpages_Roles">
+          <Key>
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="RoleId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RoleName" Type="nvarchar" MaxLength="256" Nullable="false" />
+        </EntityType>
+        <EntityType Name="webpages_UsersInRoles">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="RoleId" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_ForumReply_ForumThread">
+          <End Role="ForumThread" Type="Self.ForumThread" Multiplicity="1" />
+          <End Role="ForumReply" Type="Self.ForumReply" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ForumThread">
+              <PropertyRef Name="ThreadId" />
+            </Principal>
+            <Dependent Role="ForumReply">
+              <PropertyRef Name="ParentThreadId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ForumReply_UserProfile">
+          <End Role="UserProfile" Type="Self.UserProfile" Multiplicity="1" />
+          <End Role="ForumReply" Type="Self.ForumReply" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserProfile">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="ForumReply">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ForumThread_Forum">
+          <End Role="ForumTopic" Type="Self.ForumTopic" Multiplicity="1" />
+          <End Role="ForumThread" Type="Self.ForumThread" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ForumTopic">
+              <PropertyRef Name="TopicId" />
+            </Principal>
+            <Dependent Role="ForumThread">
+              <PropertyRef Name="ForumTopic" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ForumThread_UserProfile">
+          <End Role="UserProfile" Type="Self.UserProfile" Multiplicity="1" />
+          <End Role="ForumThread" Type="Self.ForumThread" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserProfile">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="ForumThread">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ForumTopic_Forum">
+          <End Role="Forum" Type="Self.Forum" Multiplicity="1" />
+          <End Role="ForumTopic" Type="Self.ForumTopic" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Forum">
+              <PropertyRef Name="ForumId" />
+            </Principal>
+            <Dependent Role="ForumTopic">
+              <PropertyRef Name="ForumId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ForumTopic_UserProfile">
+          <End Role="UserProfile" Type="Self.UserProfile" Multiplicity="1" />
+          <End Role="ForumTopic" Type="Self.ForumTopic" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserProfile">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="ForumTopic">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_RoleId">
+          <End Role="webpages_Roles" Type="Self.webpages_Roles" Multiplicity="1" />
+          <End Role="webpages_UsersInRoles" Type="Self.webpages_UsersInRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="webpages_Roles">
+              <PropertyRef Name="RoleId" />
+            </Principal>
+            <Dependent Role="webpages_UsersInRoles">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Service_Roles_Services">
+          <End Role="Service" Type="Self.Service" Multiplicity="1" />
+          <End Role="Service_Roles" Type="Self.Service_Roles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Service">
+              <PropertyRef Name="ServiceId" />
+            </Principal>
+            <Dependent Role="Service_Roles">
+              <PropertyRef Name="ServiceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Service_Roles_webpages_Roles">
+          <End Role="webpages_Roles" Type="Self.webpages_Roles" Multiplicity="1" />
+          <End Role="Service_Roles" Type="Self.Service_Roles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="webpages_Roles">
+              <PropertyRef Name="RoleId" />
+            </Principal>
+            <Dependent Role="Service_Roles">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_UserId">
+          <End Role="UserProfile" Type="Self.UserProfile" Multiplicity="1" />
+          <End Role="webpages_UsersInRoles" Type="Self.webpages_UsersInRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserProfile">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="webpages_UsersInRoles">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CGWebModelStoreContainer">
+          <EntitySet Name="Announcement" EntityType="Self.Announcement" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Forum" EntityType="Self.Forum" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ForumReply" EntityType="Self.ForumReply" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ForumThread" EntityType="Self.ForumThread" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ForumTopic" EntityType="Self.ForumTopic" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Service" EntityType="Self.Service" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Service_Roles" EntityType="Self.Service_Roles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserProfile" EntityType="Self.UserProfile" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="webpages_Membership" EntityType="Self.webpages_Membership" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="webpages_OAuthMembership" EntityType="Self.webpages_OAuthMembership" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="webpages_Roles" EntityType="Self.webpages_Roles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="webpages_UsersInRoles" EntityType="Self.webpages_UsersInRoles" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_ForumReply_ForumThread" Association="Self.FK_ForumReply_ForumThread">
+            <End Role="ForumThread" EntitySet="ForumThread" />
+            <End Role="ForumReply" EntitySet="ForumReply" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ForumReply_UserProfile" Association="Self.FK_ForumReply_UserProfile">
+            <End Role="UserProfile" EntitySet="UserProfile" />
+            <End Role="ForumReply" EntitySet="ForumReply" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ForumThread_Forum" Association="Self.FK_ForumThread_Forum">
+            <End Role="ForumTopic" EntitySet="ForumTopic" />
+            <End Role="ForumThread" EntitySet="ForumThread" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ForumThread_UserProfile" Association="Self.FK_ForumThread_UserProfile">
+            <End Role="UserProfile" EntitySet="UserProfile" />
+            <End Role="ForumThread" EntitySet="ForumThread" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ForumTopic_Forum" Association="Self.FK_ForumTopic_Forum">
+            <End Role="Forum" EntitySet="Forum" />
+            <End Role="ForumTopic" EntitySet="ForumTopic" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ForumTopic_UserProfile" Association="Self.FK_ForumTopic_UserProfile">
+            <End Role="UserProfile" EntitySet="UserProfile" />
+            <End Role="ForumTopic" EntitySet="ForumTopic" />
+          </AssociationSet>
+          <AssociationSet Name="fk_RoleId" Association="Self.fk_RoleId">
+            <End Role="webpages_Roles" EntitySet="webpages_Roles" />
+            <End Role="webpages_UsersInRoles" EntitySet="webpages_UsersInRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Service_Roles_Services" Association="Self.FK_Service_Roles_Services">
+            <End Role="Service" EntitySet="Service" />
+            <End Role="Service_Roles" EntitySet="Service_Roles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Service_Roles_webpages_Roles" Association="Self.FK_Service_Roles_webpages_Roles">
+            <End Role="webpages_Roles" EntitySet="webpages_Roles" />
+            <End Role="Service_Roles" EntitySet="Service_Roles" />
+          </AssociationSet>
+          <AssociationSet Name="fk_UserId" Association="Self.fk_UserId">
+            <End Role="UserProfile" EntitySet="UserProfile" />
+            <End Role="webpages_UsersInRoles" EntitySet="webpages_UsersInRoles" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="CGWebModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="CGWebEntities" p1:LazyLoadingEnabled="true">
+          <EntitySet Name="Services" EntityType="CGWebModel.Service" />
+          <EntitySet Name="Service_Roles" EntityType="CGWebModel.Service_Roles" />
+          <EntitySet Name="UserProfiles" EntityType="CGWebModel.UserProfile" />
+          <EntitySet Name="webpages_Membership" EntityType="CGWebModel.webpages_Membership" />
+          <EntitySet Name="webpages_OAuthMembership" EntityType="CGWebModel.webpages_OAuthMembership" />
+          <EntitySet Name="webpages_Roles" EntityType="CGWebModel.webpages_Roles" />
+          <AssociationSet Name="FK_Service_UserProfile_J_Service" Association="CGWebModel.FK_Service_UserProfile_J_Service">
+            <End Role="Service" EntitySet="Services" />
+            <End Role="Service_Roles" EntitySet="Service_Roles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Service_Roles_webpages_Roles" Association="CGWebModel.FK_Service_Roles_webpages_Roles">
+            <End Role="webpages_Roles" EntitySet="webpages_Roles" />
+            <End Role="Service_Roles" EntitySet="Service_Roles" />
+          </AssociationSet>
+          <AssociationSet Name="webpages_UsersInRoles" Association="CGWebModel.webpages_UsersInRoles">
+            <End Role="webpages_Roles" EntitySet="webpages_Roles" />
+            <End Role="UserProfile" EntitySet="UserProfiles" />
+          </AssociationSet>
+          <EntitySet Name="Announcements" EntityType="CGWebModel.Announcement" />
+          <AssociationSet Name="FK_Announcement_CreatedBy" Association="CGWebModel.FK_Announcement_CreatedBy">
+            <End Role="UserProfile" EntitySet="UserProfiles" />
+            <End Role="Announcement" EntitySet="Announcements" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Announcement_ModifiedBy" Association="CGWebModel.FK_Announcement_ModifiedBy">
+            <End Role="UserProfile" EntitySet="UserProfiles" />
+            <End Role="Announcement" EntitySet="Announcements" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Announcement_Role" Association="CGWebModel.FK_Announcement_Role">
+            <End Role="webpages_Roles" EntitySet="webpages_Roles" />
+            <End Role="Announcement" EntitySet="Announcements" />
+          </AssociationSet>
+          <EntitySet Name="Forums" EntityType="CGWebModel.Forum" />
+          <EntitySet Name="ForumThreads" EntityType="CGWebModel.ForumThread" />
+          <EntitySet Name="ForumTopics" EntityType="CGWebModel.ForumTopic" />
+          <AssociationSet Name="FK_ForumTopic_Forum" Association="CGWebModel.FK_ForumTopic_Forum">
+            <End Role="Forum" EntitySet="Forums" />
+            <End Role="ForumTopic" EntitySet="ForumTopics" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ForumThread_Forum" Association="CGWebModel.FK_ForumThread_Forum">
+            <End Role="ForumTopic" EntitySet="ForumTopics" />
+            <End Role="ForumThread" EntitySet="ForumThreads" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ForumThread_UserProfile" Association="CGWebModel.FK_ForumThread_UserProfile">
+            <End Role="UserProfile" EntitySet="UserProfiles" />
+            <End Role="ForumThread" EntitySet="ForumThreads" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ForumTopic_UserProfile" Association="CGWebModel.FK_ForumTopic_UserProfile">
+            <End Role="UserProfile" EntitySet="UserProfiles" />
+            <End Role="ForumTopic" EntitySet="ForumTopics" />
+          </AssociationSet>
+          <EntitySet Name="ForumReplies" EntityType="CGWebModel.ForumReply" />
+          <AssociationSet Name="FK_ForumReply_ForumThread" Association="CGWebModel.FK_ForumReply_ForumThread">
+            <End Role="ForumThread" EntitySet="ForumThreads" />
+            <End Role="ForumReply" EntitySet="ForumReplies" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ForumReply_UserProfile" Association="CGWebModel.FK_ForumReply_UserProfile">
+            <End Role="UserProfile" EntitySet="UserProfiles" />
+            <End Role="ForumReply" EntitySet="ForumReplies" />
+          </AssociationSet>
+          </EntityContainer>
+        <EntityType Name="Service">
+          <Key>
+            <PropertyRef Name="ServiceId" />
+          </Key>
+          <Property Name="ServiceId" Type="Guid" Nullable="false" />
+          <Property Name="ServiceName" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="Service_Roles" Relationship="CGWebModel.FK_Service_UserProfile_J_Service" FromRole="Service" ToRole="Service_Roles" />
+        </EntityType>
+        <EntityType Name="Service_Roles">
+          <Key>
+            <PropertyRef Name="ServiceRoleId" />
+          </Key>
+          <Property Name="ServiceRoleId" Type="Guid" Nullable="false" />
+          <Property Name="ServiceId" Type="Guid" Nullable="false" />
+          <Property Name="RoleId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Service" Relationship="CGWebModel.FK_Service_UserProfile_J_Service" FromRole="Service_Roles" ToRole="Service" />
+          <NavigationProperty Name="Roles" Relationship="CGWebModel.FK_Service_Roles_webpages_Roles" FromRole="Service_Roles" ToRole="webpages_Roles" />
+        </EntityType>
+        <EntityType Name="UserProfile">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="56" Unicode="true" FixedLength="false" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="256" Unicode="true" FixedLength="false" />
+          <Property Name="Timezone" Type="String" Nullable="false" MaxLength="56" Unicode="true" FixedLength="false" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="SteamHandle" Type="String" MaxLength="128" Unicode="true" FixedLength="false" />
+          <Property Name="ListInDirectory" Type="Boolean" Nullable="false" />
+          <Property Name="Signature" Type="String" MaxLength="1000" Unicode="true" FixedLength="false" />
+          <Property Name="AvatarFileName" Type="String" MaxLength="64" Unicode="true" FixedLength="false" />
+          <Property Name="BanExpireDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="webpages_Roles" Relationship="CGWebModel.webpages_UsersInRoles" FromRole="UserProfile" ToRole="webpages_Roles" />
+          <NavigationProperty Name="CreatedAnnouncements" Relationship="CGWebModel.FK_Announcement_CreatedBy" FromRole="UserProfile" ToRole="Announcement" />
+          <NavigationProperty Name="ModifiedAnnouncements" Relationship="CGWebModel.FK_Announcement_ModifiedBy" FromRole="UserProfile" ToRole="Announcement" />
+          <NavigationProperty Name="ForumThreads" Relationship="CGWebModel.FK_ForumThread_UserProfile" FromRole="UserProfile" ToRole="ForumThread" />
+          <NavigationProperty Name="ForumTopics" Relationship="CGWebModel.FK_ForumTopic_UserProfile" FromRole="UserProfile" ToRole="ForumTopic" />
+          <NavigationProperty Name="ForumReplies" Relationship="CGWebModel.FK_ForumReply_UserProfile" FromRole="UserProfile" ToRole="ForumReply" />
+        </EntityType>
+        <EntityType Name="webpages_Membership">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Precision="3" />
+          <Property Name="ConfirmationToken" Type="String" MaxLength="128" Unicode="true" FixedLength="false" />
+          <Property Name="IsConfirmed" Type="Boolean" />
+          <Property Name="LastPasswordFailureDate" Type="DateTime" Precision="3" />
+          <Property Name="PasswordFailuresSinceLastSuccess" Type="Int32" Nullable="false" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="128" Unicode="true" FixedLength="false" />
+          <Property Name="PasswordChangedDate" Type="DateTime" Precision="3" />
+          <Property Name="PasswordSalt" Type="String" Nullable="false" MaxLength="128" Unicode="true" FixedLength="false" />
+          <Property Name="PasswordVerificationToken" Type="String" MaxLength="128" Unicode="true" FixedLength="false" />
+          <Property Name="PasswordVerificationTokenExpirationDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="webpages_OAuthMembership">
+          <Key>
+            <PropertyRef Name="Provider" />
+            <PropertyRef Name="ProviderUserId" />
+          </Key>
+          <Property Name="Provider" Type="String" Nullable="false" MaxLength="30" Unicode="true" FixedLength="false" />
+          <Property Name="ProviderUserId" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="webpages_Roles">
+          <Key>
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="RoleId" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="RoleName" Type="String" Nullable="false" MaxLength="256" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="Service_Roles" Relationship="CGWebModel.FK_Service_Roles_webpages_Roles" FromRole="webpages_Roles" ToRole="Service_Roles" />
+          <NavigationProperty Name="UserProfiles" Relationship="CGWebModel.webpages_UsersInRoles" FromRole="webpages_Roles" ToRole="UserProfile" />
+          <NavigationProperty Name="Announcements" Relationship="CGWebModel.FK_Announcement_Role" FromRole="webpages_Roles" ToRole="Announcement" />
+        </EntityType>
+        <Association Name="FK_Service_UserProfile_J_Service">
+          <End Role="Service" Type="CGWebModel.Service" Multiplicity="1" />
+          <End Role="Service_Roles" Type="CGWebModel.Service_Roles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Service">
+              <PropertyRef Name="ServiceId" />
+            </Principal>
+            <Dependent Role="Service_Roles">
+              <PropertyRef Name="ServiceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Service_Roles_webpages_Roles">
+          <End Role="webpages_Roles" Type="CGWebModel.webpages_Roles" Multiplicity="1" />
+          <End Role="Service_Roles" Type="CGWebModel.Service_Roles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="webpages_Roles">
+              <PropertyRef Name="RoleId" />
+            </Principal>
+            <Dependent Role="Service_Roles">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="webpages_UsersInRoles">
+          <End Role="webpages_Roles" Type="CGWebModel.webpages_Roles" Multiplicity="*" />
+          <End Role="UserProfile" Type="CGWebModel.UserProfile" Multiplicity="*" />
+        </Association>
+        <EntityType Name="Announcement">
+          <Key>
+            <PropertyRef Name="AnnouncementId" />
+          </Key>
+          <Property Name="AnnouncementId" Type="Int32" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreatedBy" Type="Int32" Nullable="false" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Content" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="IsPublic" Type="Boolean" Nullable="false" />
+          <Property Name="RestrictToRole" Type="Int32" />
+          <NavigationProperty Name="CreatedUserProfile" Relationship="CGWebModel.FK_Announcement_CreatedBy" FromRole="Announcement" ToRole="UserProfile" />
+          <NavigationProperty Name="ModifiedUserProfile" Relationship="CGWebModel.FK_Announcement_ModifiedBy" FromRole="Announcement" ToRole="UserProfile" />
+          <NavigationProperty Name="RoleRestriction" Relationship="CGWebModel.FK_Announcement_Role" FromRole="Announcement" ToRole="webpages_Roles" />
+        </EntityType>
+        <Association Name="FK_Announcement_CreatedBy">
+          <End Type="CGWebModel.UserProfile" Role="UserProfile" Multiplicity="1" />
+          <End Type="CGWebModel.Announcement" Role="Announcement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserProfile">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Announcement">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Announcement_ModifiedBy">
+          <End Type="CGWebModel.UserProfile" Role="UserProfile" Multiplicity="0..1" />
+          <End Type="CGWebModel.Announcement" Role="Announcement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserProfile">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Announcement">
+              <PropertyRef Name="ModifiedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Announcement_Role">
+          <End Type="CGWebModel.webpages_Roles" Role="webpages_Roles" Multiplicity="0..1" />
+          <End Type="CGWebModel.Announcement" Role="Announcement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="webpages_Roles">
+              <PropertyRef Name="RoleId" />
+            </Principal>
+            <Dependent Role="Announcement">
+              <PropertyRef Name="RestrictToRole" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Forum">
+          <Key>
+            <PropertyRef Name="ForumId" />
+          </Key>
+          <Property Name="ForumId" Type="Guid" Nullable="false" />
+          <Property Name="ForumTitle" Type="String" Nullable="false" MaxLength="128" FixedLength="true" Unicode="true" />
+          <Property Name="IsPublic" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ForumTopics" Relationship="CGWebModel.FK_ForumTopic_Forum" FromRole="Forum" ToRole="ForumTopic" />
+        </EntityType>
+        <EntityType Name="ForumThread">
+          <Key>
+            <PropertyRef Name="ThreadId" />
+          </Key>
+          <Property Name="ThreadId" Type="Guid" Nullable="false" />
+          <Property Name="ForumTopic" Type="Guid" Nullable="false" />
+          <Property Name="ThreadTitle" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="ThreadContent" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedBy" Type="Int32" Nullable="false" />
+          <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="ParentForumTopic" Relationship="CGWebModel.FK_ForumThread_Forum" FromRole="ForumThread" ToRole="ForumTopic" />
+          <NavigationProperty Name="UserProfile" Relationship="CGWebModel.FK_ForumThread_UserProfile" FromRole="ForumThread" ToRole="UserProfile" />
+          <Property Name="IsSticky" Type="Boolean" />
+          <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="ForumReplies" Relationship="CGWebModel.FK_ForumReply_ForumThread" FromRole="ForumThread" ToRole="ForumReply" />
+        </EntityType>
+        <EntityType Name="ForumTopic">
+          <Key>
+            <PropertyRef Name="TopicId" />
+          </Key>
+          <Property Name="TopicId" Type="Guid" Nullable="false" />
+          <Property Name="ForumId" Type="Guid" Nullable="false" />
+          <Property Name="TopicTitle" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="TopicDescription" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="IsPublic" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedBy" Type="Int32" Nullable="false" />
+          <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Forum" Relationship="CGWebModel.FK_ForumTopic_Forum" FromRole="ForumTopic" ToRole="Forum" />
+          <NavigationProperty Name="ForumThreads" Relationship="CGWebModel.FK_ForumThread_Forum" FromRole="ForumTopic" ToRole="ForumThread" />
+          <NavigationProperty Name="UserProfile" Relationship="CGWebModel.FK_ForumTopic_UserProfile" FromRole="ForumTopic" ToRole="UserProfile" />
+        </EntityType>
+        <Association Name="FK_ForumTopic_Forum">
+          <End Type="CGWebModel.Forum" Role="Forum" Multiplicity="1" />
+          <End Type="CGWebModel.ForumTopic" Role="ForumTopic" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Forum">
+              <PropertyRef Name="ForumId" />
+            </Principal>
+            <Dependent Role="ForumTopic">
+              <PropertyRef Name="ForumId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ForumThread_Forum">
+          <End Type="CGWebModel.ForumTopic" Role="ForumTopic" Multiplicity="1" />
+          <End Type="CGWebModel.ForumThread" Role="ForumThread" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ForumTopic">
+              <PropertyRef Name="TopicId" />
+            </Principal>
+            <Dependent Role="ForumThread">
+              <PropertyRef Name="ForumTopic" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ForumThread_UserProfile">
+          <End Type="CGWebModel.UserProfile" Role="UserProfile" Multiplicity="1" />
+          <End Type="CGWebModel.ForumThread" Role="ForumThread" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserProfile">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="ForumThread">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ForumTopic_UserProfile">
+          <End Type="CGWebModel.UserProfile" Role="UserProfile" Multiplicity="1" />
+          <End Type="CGWebModel.ForumTopic" Role="ForumTopic" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserProfile">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="ForumTopic">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ForumReply">
+          <Key>
+            <PropertyRef Name="ReplyId" />
+          </Key>
+          <Property Name="ReplyId" Type="Guid" Nullable="false" />
+          <Property Name="ParentThreadId" Type="Guid" Nullable="false" />
+          <Property Name="ReplyContent" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedBy" Type="Int32" Nullable="false" />
+          <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="ForumThread" Relationship="CGWebModel.FK_ForumReply_ForumThread" FromRole="ForumReply" ToRole="ForumThread" />
+          <NavigationProperty Name="UserProfile" Relationship="CGWebModel.FK_ForumReply_UserProfile" FromRole="ForumReply" ToRole="UserProfile" />
+        </EntityType>
+        <Association Name="FK_ForumReply_ForumThread">
+          <End Type="CGWebModel.ForumThread" Role="ForumThread" Multiplicity="1" />
+          <End Type="CGWebModel.ForumReply" Role="ForumReply" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ForumThread">
+              <PropertyRef Name="ThreadId" />
+            </Principal>
+            <Dependent Role="ForumReply">
+              <PropertyRef Name="ParentThreadId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ForumReply_UserProfile">
+          <End Type="CGWebModel.UserProfile" Role="UserProfile" Multiplicity="1" />
+          <End Type="CGWebModel.ForumReply" Role="ForumReply" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserProfile">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="ForumReply">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="CGWebModelStoreContainer" CdmEntityContainer="CGWebEntities">
+          <EntitySetMapping Name="Services">
+            <EntityTypeMapping TypeName="CGWebModel.Service">
+              <MappingFragment StoreEntitySet="Service">
+                <ScalarProperty Name="ServiceId" ColumnName="ServiceId" />
+                <ScalarProperty Name="ServiceName" ColumnName="ServiceName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Service_Roles">
+            <EntityTypeMapping TypeName="CGWebModel.Service_Roles">
+              <MappingFragment StoreEntitySet="Service_Roles">
+                <ScalarProperty Name="ServiceRoleId" ColumnName="ServiceRoleId" />
+                <ScalarProperty Name="ServiceId" ColumnName="ServiceId" />
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserProfiles">
+            <EntityTypeMapping TypeName="CGWebModel.UserProfile">
+              <MappingFragment StoreEntitySet="UserProfile">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Timezone" ColumnName="Timezone" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="SteamHandle" ColumnName="SteamHandle" />
+                <ScalarProperty Name="ListInDirectory" ColumnName="ListInDirectory" />
+                <ScalarProperty Name="Signature" ColumnName="Signature" />
+                <ScalarProperty Name="AvatarFileName" ColumnName="AvatarFileName" />
+                <ScalarProperty Name="BanExpireDate" ColumnName="BanExpireDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="webpages_Membership">
+            <EntityTypeMapping TypeName="CGWebModel.webpages_Membership">
+              <MappingFragment StoreEntitySet="webpages_Membership">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="ConfirmationToken" ColumnName="ConfirmationToken" />
+                <ScalarProperty Name="IsConfirmed" ColumnName="IsConfirmed" />
+                <ScalarProperty Name="LastPasswordFailureDate" ColumnName="LastPasswordFailureDate" />
+                <ScalarProperty Name="PasswordFailuresSinceLastSuccess" ColumnName="PasswordFailuresSinceLastSuccess" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="PasswordChangedDate" ColumnName="PasswordChangedDate" />
+                <ScalarProperty Name="PasswordSalt" ColumnName="PasswordSalt" />
+                <ScalarProperty Name="PasswordVerificationToken" ColumnName="PasswordVerificationToken" />
+                <ScalarProperty Name="PasswordVerificationTokenExpirationDate" ColumnName="PasswordVerificationTokenExpirationDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="webpages_OAuthMembership">
+            <EntityTypeMapping TypeName="CGWebModel.webpages_OAuthMembership">
+              <MappingFragment StoreEntitySet="webpages_OAuthMembership">
+                <ScalarProperty Name="Provider" ColumnName="Provider" />
+                <ScalarProperty Name="ProviderUserId" ColumnName="ProviderUserId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="webpages_Roles">
+            <EntityTypeMapping TypeName="CGWebModel.webpages_Roles">
+              <MappingFragment StoreEntitySet="webpages_Roles">
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+                <ScalarProperty Name="RoleName" ColumnName="RoleName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="webpages_UsersInRoles" TypeName="CGWebModel.webpages_UsersInRoles" StoreEntitySet="webpages_UsersInRoles">
+            <EndProperty Name="webpages_Roles">
+              <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+            </EndProperty>
+            <EndProperty Name="UserProfile">
+              <ScalarProperty Name="UserId" ColumnName="UserId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <EntitySetMapping Name="Announcements">
+            <EntityTypeMapping TypeName="CGWebModel.Announcement">
+              <MappingFragment StoreEntitySet="Announcement">
+                <ScalarProperty Name="RestrictToRole" ColumnName="RestrictToRole" />
+                <ScalarProperty Name="IsPublic" ColumnName="IsPublic" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="AnnouncementId" ColumnName="AnnouncementId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Forums">
+            <EntityTypeMapping TypeName="CGWebModel.Forum">
+              <MappingFragment StoreEntitySet="Forum">
+                <ScalarProperty Name="IsPublic" ColumnName="IsPublic" />
+                <ScalarProperty Name="ForumTitle" ColumnName="ForumTitle" />
+                <ScalarProperty Name="ForumId" ColumnName="ForumId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ForumThreads">
+            <EntityTypeMapping TypeName="CGWebModel.ForumThread">
+              <MappingFragment StoreEntitySet="ForumThread">
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+                <ScalarProperty Name="IsSticky" ColumnName="IsSticky" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ThreadContent" ColumnName="ThreadContent" />
+                <ScalarProperty Name="ThreadTitle" ColumnName="ThreadTitle" />
+                <ScalarProperty Name="ForumTopic" ColumnName="ForumTopic" />
+                <ScalarProperty Name="ThreadId" ColumnName="ThreadId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ForumTopics">
+            <EntityTypeMapping TypeName="CGWebModel.ForumTopic">
+              <MappingFragment StoreEntitySet="ForumTopic">
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="IsPublic" ColumnName="IsPublic" />
+                <ScalarProperty Name="TopicDescription" ColumnName="TopicDescription" />
+                <ScalarProperty Name="TopicTitle" ColumnName="TopicTitle" />
+                <ScalarProperty Name="ForumId" ColumnName="ForumId" />
+                <ScalarProperty Name="TopicId" ColumnName="TopicId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ForumReplies">
+            <EntityTypeMapping TypeName="CGWebModel.ForumReply">
+              <MappingFragment StoreEntitySet="ForumReply">
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ReplyContent" ColumnName="ReplyContent" />
+                <ScalarProperty Name="ParentThreadId" ColumnName="ParentThreadId" />
+                <ScalarProperty Name="ReplyId" ColumnName="ReplyId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <DesignerProperty Name="UseLegacyProvider" Value="True" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

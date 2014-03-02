@@ -1,0 +1,10 @@
+﻿@model CincyGeeksWebsite.Models.Shared.AvatarPartialViewModel
+<div>
+    <img alt="@Model.AltText" src="@Url.Content(Model.ResourcePath)" width="@Model.Width" height="@Model.Height" />
+    @if(!Model.ImageOnly){
+        <p>@Model.UserName</p>
+        <p>@Model.UserType</p>
+        <p>@Model.StatsInfo</p>
+    }
+</div>
+

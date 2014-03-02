@@ -1,0 +1,15 @@
+﻿@model CincyGeeksWebsite.Models.Shared.AnnouncementPartialModel
+@{
+    ViewBag.Title = "_AnnouncementPartial";
+}
+
+<div class="announcement">
+    <p class="announcement">@Model.Title</p>
+    <hr />
+    <p>@Model.Content</p>
+    <hr />
+    <small>Created: @Model.CreatedBy - @Model.CreatedOn </small>
+    @if(!String.IsNullOrEmpty(Model.ModifiedBy)){
+        <small>| Modified: @Model.ModifiedBy - @Model.ModifiedOn</small>   
+    }
+</div>

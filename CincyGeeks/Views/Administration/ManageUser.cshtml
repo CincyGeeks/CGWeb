@@ -1,0 +1,111 @@
+﻿@model CincyGeeksWebsite.Models.Shared.UserProfile
+
+@{
+    ViewBag.Title = "Manage User";
+    ViewBag.Message = "Remember to extract doughnuts froms this guy...";
+}
+
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            <hgroup class="title">
+                <h1>@ViewBag.Title.</h1>
+                <h2>@ViewBag.Message</h2>
+            </hgroup>
+        </div>
+    </section>
+}
+
+@using (Html.BeginForm("ManageUser", "Administration", FormMethod.Post)){
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.UserId)
+    <table>
+        <tr>
+            <td>@Html.LabelFor(m => m.UserName)</td>
+            <td>@Html.TextBoxFor(m => m.UserName)</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(m => m.Email)</td>
+            <td>@Html.TextBoxFor(m => m.Email)</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(m => m.SteamHandle)</td>
+            <td>@Html.TextBoxFor(m => m.SteamHandle)</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(m => m.AvatarFileName)</td>
+            <td>@Html.TextBoxFor(m => m.AvatarFileName)</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(m => m.Signature)</td>
+            <td>@Html.TextAreaFor(m => m.Signature)</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(m => m.Timezone)</td>
+            <td>@Html.EditorFor(m => m.Timezone)</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(m => m.BanExpireDate)</td>
+            <td>@Html.EditorFor(m => m.BanExpireDate)</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(m => m.PhoneNumber)</td>
+            <td>@Html.TextBoxFor(m => m.PhoneNumber)</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(m => m.ListInDirectory)</td>
+            <td>@Html.CheckBoxFor(m => m.ListInDirectory)</td>
+        </tr>
+        <tr>
+            <td><label>Reset Password</label></td>
+            <td>
+                <a id="resetLink" href="#" onclick="ResetPassword('@Model.UserName')">Reset...</a>
+                <label id="newPassword" style="color:red; display:none"></label>
+            </td>
+        </tr>
+        @if (User.IsInRole("Root"))
+        {
+        <tr>
+            <td><label>Remove User</label></td>
+            <td>
+                <input id="enableDelete" type="checkbox" onchange="EnableCheckChanged()" />
+                <div id="deleteDiv" style="display:none;">@Html.ActionLink("Delete User", "DeleteUser", new { userId = Model.UserId })</div>
+            </td>
+        </tr>
+        }
+    </table>
+    if (ViewBag.SaveMessage != null){
+        <label style="color:red">@ViewBag.SaveMessage</label>
+    }
+    <input type="submit" value="Save" />
+    @Html.ActionLink("Back...", "UserDashboard");
+}
+
+@section Scripts{
+    <script>
+        function ResetPassword(username) {
+            $.ajax({
+                url: 'ResetPassword',
+                data: { username: username },
+                type: 'POST',
+                success: ResetAjaxSuccess,
+                failure: ResetAjaxFail
+            });
+        }
+
+        function ResetAjaxSuccess(data) {
+            $("#resetLink").hide();
+            $("#newPassword").show();
+            $("#newPassword").text(data);
+        }
+
+        function ResetAjaxFail(data) {
+            alert(data);
+        }
+
+        function EnableCheckChanged() {
+            $("#deleteDiv").show();
+            $("#enableDelete").hide();
+        }
+    </script>
+}

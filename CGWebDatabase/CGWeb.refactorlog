@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Operations Version="1.0" xmlns="http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02">
+  <Operation Name="Rename Refactor" Key="b4ad15ff-6fd3-422f-a5bb-7353298d7413" ChangeDateTime="01/03/2014 15:42:03">
+    <Property Name="ElementName" Value="[dbo].[Announcement].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Announcement]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="AnnouncementId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="82285aef-70f6-4afc-a7ea-fa256598d56b" ChangeDateTime="03/01/2014 08:44:44">
+    <Property Name="ElementName" Value="[dbo].[ForumTopics].[Topic]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[ForumTopics]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="TopicTitle" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="e2b488b3-761d-4046-9463-3bf53e1d52b0" ChangeDateTime="03/01/2014 08:55:24">
+    <Property Name="ElementName" Value="[dbo].[ForumTopic].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[ForumTopic]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="TopicId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="e3951d97-1fc2-40e1-94db-d3763f2dbc32" ChangeDateTime="03/01/2014 08:55:29">
+    <Property Name="ElementName" Value="[dbo].[Forum].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Forum]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="ForumId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="643afe06-cf79-4235-a2aa-10557425e474" ChangeDateTime="03/01/2014 09:09:20">
+    <Property Name="ElementName" Value="[dbo].[ForumThread].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[ForumThread]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="ThreadId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="51b61104-95f9-4775-a7a3-567ac723685b" ChangeDateTime="03/01/2014 09:09:40">
+    <Property Name="ElementName" Value="[dbo].[ForumReply].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[ForumReply]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="ReplyId" />
+  </Operation>
+</Operations>

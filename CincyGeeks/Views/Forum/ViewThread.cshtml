@@ -1,0 +1,92 @@
+﻿@model CincyGeeksWebsite.Models.Forum.ViewThreadModel
+
+@{
+    ViewBag.Title = Model.CurrentThread.ThreadTitle;
+}
+
+<h2>
+    @if (Model.CurrentThread.IsSticky)
+    {
+        <b>[STICKY]</b>
+    }
+    @Model.CurrentThread.ThreadTitle
+</h2>
+@if (Model.MaxPages > 0)
+{
+    Html.RenderAction("Paginator", new CincyGeeksWebsite.Models.Shared.PaginatorRenderModel()
+    {
+        ActionName = "ViewThread",
+        ActionParamerType = new CincyGeeksWebsite.Models.Forum.ForumThreadRequestModel(),
+        ConstantValues = new Dictionary<string, object>()
+        {
+            {"ThreadId", Model.CurrentThread.ThreadId}
+        },
+        CurrentPage = Model.CurrentPage,
+        MaxPage = Model.MaxPages,
+        PageValueMember = "CurrentPage"
+    });   
+}
+
+@if (Model.CurrentPage == 0)
+{
+    <div style="overflow:auto;">
+        <div style="float:left; width:12%">
+            @{
+                Html.RenderAction("Avatar", new CincyGeeksWebsite.Models.Shared.AvatarRenderModel()
+                {
+                    PictureOnly = false,
+                    UserId = Model.CurrentThread.CreatedById
+                });
+            }
+        </div>
+        <div style="float:left; width:83%;">    
+            <p>
+                Created By: @Model.CurrentThread.CreatedBy on @Model.CurrentThread.CreatedOn
+            </p>
+            <hr />
+            <p>
+                @Model.CurrentThread.ThreadContent
+            </p>
+        </div>
+    </div>
+}
+
+@foreach (CincyGeeksWebsite.Models.Forum.ForumReplyModel reply in Model.Replies)
+{
+    <div style="overflow:auto;">
+        <div style="float:left; width:12%">
+            @{
+                Html.RenderAction("Avatar", new CincyGeeksWebsite.Models.Shared.AvatarRenderModel()
+                {
+                    PictureOnly = false,
+                    UserId = reply.CreatedById
+                });
+            }
+        </div>
+        <div style="float:left; width:83%;">
+            <p>@reply.ReplyContent</p>
+            <hr />
+            <p> Created By: @reply.CreatedBy on @reply.CreatedOn </p>
+            @if (!String.IsNullOrEmpty(reply.ModifiedOn))
+            {
+                <p>| Modified On: @reply.ModifiedOn</p>
+            }
+        </div>  
+    </div>
+}
+
+@if (Model.MaxPages > 0)
+{
+    Html.RenderAction("Paginator", new CincyGeeksWebsite.Models.Shared.PaginatorRenderModel()
+    {
+        ActionName = "ViewThread",
+        ActionParamerType = new CincyGeeksWebsite.Models.Forum.ForumThreadRequestModel(),
+        ConstantValues = new Dictionary<string, object>()
+        {
+            {"ThreadId", Model.CurrentThread.ThreadId}
+        },
+        CurrentPage = Model.CurrentPage,
+        MaxPage = Model.MaxPages,
+        PageValueMember = "CurrentPage"
+    });   
+}

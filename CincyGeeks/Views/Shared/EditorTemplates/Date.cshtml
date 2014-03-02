@@ -1,0 +1,14 @@
+﻿<div class="float-left">
+    @Html.TextBoxFor(m => m)
+</div>
+<span class="ui-icon ui-icon-calendar"></span>
+
+@{var fieldName = ViewData.TemplateInfo.HtmlFieldPrefix;}
+@using(Html.BeginScripts())
+{
+    <script>
+        $(document).ready(function () {
+            $("#@fieldName").datepicker();
+        });
+    </script>
+}

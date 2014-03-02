@@ -1,0 +1,12 @@
+﻿@model CincyGeeksWebsite.Models.Forum.ForumIndexModel
+@{
+    ViewBag.Title = "Forums List";
+}
+
+<h2>Forum List</h2>
+<ul>
+    @foreach (KeyValuePair<string, Guid> forum in Model.Forums)
+    {
+        <li>@Html.ActionLink(forum.Key, "ViewForum", new { forumId = forum.Value })</li>
+    }
+</ul>

@@ -1,0 +1,47 @@
+﻿@model List<CGDataEntities.UserProfile>
+@{
+    ViewBag.Title = "User Dashboard";
+    ViewBag.Message = "So you need to fix someone's shit? Figures...";
+}
+
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            <hgroup class="title">
+                <h1>@ViewBag.Title.</h1>
+                <h2>@ViewBag.Message</h2>
+            </hgroup>
+        </div>
+    </section>
+}
+
+<table border="1">
+    <thead>
+        <tr>
+            <th>Avatar</th>
+            <th>Email</th>
+            <th>Time Zone</th>
+            <th>Edit</th>
+        </tr>
+    </thead>
+    @foreach (CGDataEntities.UserProfile profile in Model)
+    {
+        <tr>
+            <td>
+            @{
+                Html.RenderAction("Avatar", new CincyGeeksWebsite.Models.Shared.AvatarRenderModel()
+                {
+                    PictureOnly = false,
+                    UserId = profile.UserId
+                });
+            }
+            </td>
+            <td>@Html.DisplayFor(email => profile.Email)</td>
+            <td>@Html.DisplayFor(timezone => profile.Timezone)</td>
+            <td>
+                <p>@Html.ActionLink("Manage User Profile", "ManageUser", new { userId = profile.UserId })</p>
+                <p>@Html.ActionLink("Manage User Roles", "ManageUserRoles", new { userId = profile.UserId }) </p>
+            </td>
+        </tr>
+    }
+</table>

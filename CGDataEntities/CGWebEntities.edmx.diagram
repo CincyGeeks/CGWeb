@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="b94270f76a184efbb3de082a9ec72951" Name="Diagram1" ZoomLevel="80">
+        <EntityTypeShape EntityType="CGWebModel.Service" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CGWebModel.Service_Roles" Width="1.5" PointX="3" PointY="2.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="CGWebModel.UserProfile" Width="1.5" PointX="3" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CGWebModel.webpages_Membership" Width="1.5" PointX="5.75" PointY="4.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="CGWebModel.webpages_OAuthMembership" Width="1.5" PointX="7.75" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="CGWebModel.webpages_Roles" Width="1.5" PointX="0.75" PointY="3.625" IsExpanded="true" />
+        <AssociationConnector Association="CGWebModel.FK_Service_UserProfile_J_Service" ManuallyRouted="false" />
+        <AssociationConnector Association="CGWebModel.FK_Service_Roles_webpages_Roles" ManuallyRouted="false" />
+        <AssociationConnector Association="CGWebModel.webpages_UsersInRoles" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="CGWebModel.Announcement" Width="1.5" PointX="8.25" PointY="4.75" />
+        <AssociationConnector Association="CGWebModel.FK_Announcement_CreatedBy" />
+        <AssociationConnector Association="CGWebModel.FK_Announcement_ModifiedBy" />
+        <AssociationConnector Association="CGWebModel.FK_Announcement_Role" />
+        <EntityTypeShape EntityType="CGWebModel.Forum" Width="1.5" PointX="7.75" PointY="14.75" />
+        <EntityTypeShape EntityType="CGWebModel.ForumThread" Width="1.5" PointX="5" PointY="10.25" />
+        <EntityTypeShape EntityType="CGWebModel.ForumTopic" Width="1.5" PointX="9.75" PointY="11.75" />
+        <AssociationConnector Association="CGWebModel.FK_ForumTopic_Forum" />
+        <AssociationConnector Association="CGWebModel.FK_ForumThread_Forum" />
+        <AssociationConnector Association="CGWebModel.FK_ForumThread_UserProfile" />
+        <AssociationConnector Association="CGWebModel.FK_ForumTopic_UserProfile" />
+        <EntityTypeShape EntityType="CGWebModel.ForumReply" Width="1.5" PointX="7.25" PointY="9.25" />
+        <AssociationConnector Association="CGWebModel.FK_ForumReply_ForumThread" />
+        <AssociationConnector Association="CGWebModel.FK_ForumReply_UserProfile" />
+        </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
