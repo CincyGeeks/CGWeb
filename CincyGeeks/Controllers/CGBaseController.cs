@@ -80,7 +80,7 @@ namespace CincyGeeksWebsite.Controllers
 
             if (renderModel.MaxPage > currentLinkLimit)
             {
-                if ((renderModel.MaxPage - renderModel.CurrentPage) > currentLinkLimit)
+                if ((renderModel.MaxPage - renderModel.CurrentPage) >= currentLinkLimit)
                 {
                     int leadingGroupCount = currentLinkLimit - currentTailingLinkCount;
                     int startingLeadingValue, endingLeadingValue, startEndingValue, endEndingValue;

@@ -21,7 +21,7 @@ namespace CgWebDataGenerator.BuildJob
         {
             log.Info("Init FourmGenerationJob");
 
-            Random rand = new Random((int)DateTime.Now.Ticks);
+            Random rand = new Random((int)DateTime.UtcNow.Ticks);
 
             using (CGWebEntities entities = new CGWebEntities())
             {
@@ -69,7 +69,7 @@ namespace CgWebDataGenerator.BuildJob
             {
                 new ForumTopicStruct(){
                    CreatedBy =  _currentUsers[rand.Next(0, _currentUsers.Count - 1)].UserId,
-                   CreatedOn = DateTime.Now,
+                   CreatedOn = DateTime.UtcNow,
                    Description = "Discussion for EvE Online goes here.",
                    ForumId = _forums[1].ForumId,
                    IsPublic = false,
@@ -78,7 +78,7 @@ namespace CgWebDataGenerator.BuildJob
                 },
                 new ForumTopicStruct(){
                    CreatedBy =  _currentUsers[rand.Next(0, _currentUsers.Count - 1)].UserId,
-                   CreatedOn = DateTime.Now,
+                   CreatedOn = DateTime.UtcNow,
                    Description = "Discussion for Counter Strike:Global Offensive goes here.",
                    ForumId = _forums[1].ForumId,
                    IsPublic = false,
@@ -87,7 +87,7 @@ namespace CgWebDataGenerator.BuildJob
                 },
                 new ForumTopicStruct(){
                    CreatedBy =  _currentUsers[rand.Next(0, _currentUsers.Count - 1)].UserId,
-                   CreatedOn = DateTime.Now,
+                   CreatedOn = DateTime.UtcNow,
                    Description = "Discussion for the public goes here.",
                    ForumId = _forums[0].ForumId,
                    IsPublic = true,
@@ -96,7 +96,7 @@ namespace CgWebDataGenerator.BuildJob
                 },
                 new ForumTopicStruct(){
                    CreatedBy =  _currentUsers[rand.Next(0, _currentUsers.Count - 1)].UserId,
-                   CreatedOn = DateTime.Now,
+                   CreatedOn = DateTime.UtcNow,
                    Description = "Discussion for the BOINC Team goes here.",
                    ForumId = _forums[2].ForumId,
                    IsPublic = false,
@@ -105,7 +105,7 @@ namespace CgWebDataGenerator.BuildJob
                 },
                 new ForumTopicStruct(){
                    CreatedBy =  _currentUsers[rand.Next(0, _currentUsers.Count - 1)].UserId,
-                   CreatedOn = DateTime.Now,
+                   CreatedOn = DateTime.UtcNow,
                    Description = "Report website bugs here.",
                    ForumId = _forums[3].ForumId,
                    IsPublic = true,
@@ -132,7 +132,7 @@ namespace CgWebDataGenerator.BuildJob
             {
                 new ForumThreadStruct(){
                     CreatedBy = _currentUsers[rand.Next(0, _currentUsers.Count - 1)].UserId,
-                    CreatedOn = DateTime.Now,
+                    CreatedOn = DateTime.UtcNow,
                     IsSticky = false,
                     ModifiedOn = null,
                     ThreadContent = "An Eve thread blah blah blah...",
@@ -142,7 +142,7 @@ namespace CgWebDataGenerator.BuildJob
                 },
                 new ForumThreadStruct(){
                     CreatedBy = _currentUsers[rand.Next(0, _currentUsers.Count - 1)].UserId,
-                    CreatedOn = DateTime.Now,
+                    CreatedOn = DateTime.UtcNow,
                     IsSticky = false,
                     ModifiedOn = null,
                     ThreadContent = "An Eve thread blah blah blah...",
@@ -152,7 +152,7 @@ namespace CgWebDataGenerator.BuildJob
                 },
                 new ForumThreadStruct(){
                     CreatedBy = _currentUsers[rand.Next(0, _currentUsers.Count - 1)].UserId,
-                    CreatedOn = DateTime.Now,
+                    CreatedOn = DateTime.UtcNow,
                     IsSticky = false,
                     ModifiedOn = null,
                     ThreadContent = "A Counter Strike:Global Offensive thread blah blah blah...",
@@ -162,7 +162,7 @@ namespace CgWebDataGenerator.BuildJob
                 },
                 new ForumThreadStruct(){
                     CreatedBy = _currentUsers[rand.Next(0, _currentUsers.Count - 1)].UserId,
-                    CreatedOn = DateTime.Now,
+                    CreatedOn = DateTime.UtcNow,
                     IsSticky = false,
                     ModifiedOn = null,
                     ThreadContent = "A Counter Strike:Global Offensive thread blah blah blah...",
@@ -172,7 +172,7 @@ namespace CgWebDataGenerator.BuildJob
                 },
                 new ForumThreadStruct(){
                     CreatedBy = _currentUsers[rand.Next(0, _currentUsers.Count - 1)].UserId,
-                    CreatedOn = DateTime.Now,
+                    CreatedOn = DateTime.UtcNow,
                     IsSticky = false,
                     ModifiedOn = null,
                     ThreadContent = "A public thread blah blah blah...",
@@ -182,7 +182,7 @@ namespace CgWebDataGenerator.BuildJob
                 },
                 new ForumThreadStruct(){
                     CreatedBy = _currentUsers[rand.Next(0, _currentUsers.Count - 1)].UserId,
-                    CreatedOn = DateTime.Now,
+                    CreatedOn = DateTime.UtcNow,
                     IsSticky = false,
                     ModifiedOn = null,
                     ThreadContent = "A BOINC thread blah blah blah...",
@@ -192,12 +192,32 @@ namespace CgWebDataGenerator.BuildJob
                 },
                 new ForumThreadStruct(){
                     CreatedBy = _currentUsers[rand.Next(0, _currentUsers.Count - 1)].UserId,
-                    CreatedOn = DateTime.Now,
+                    CreatedOn = DateTime.UtcNow,
                     IsSticky = true,
                     ModifiedOn = null,
                     ThreadContent = "A bug thread thread blah blah blah...",
                     ThreadId = Guid.NewGuid(),
                     ThreadTitle = "Bug Thread",
+                    TopicId = _forumTopics[4].TopicId
+                },
+                new ForumThreadStruct(){
+                    CreatedBy = _currentUsers[rand.Next(0, _currentUsers.Count - 1)].UserId,
+                    CreatedOn = DateTime.UtcNow.AddSeconds(1),
+                    IsSticky = true,
+                    ModifiedOn = null,
+                    ThreadContent = "A bug thread thread blah blah blah...",
+                    ThreadId = Guid.NewGuid(),
+                    ThreadTitle = "Bug Thread 02",
+                    TopicId = _forumTopics[4].TopicId
+                },
+                new ForumThreadStruct(){
+                    CreatedBy = _currentUsers[rand.Next(0, _currentUsers.Count - 1)].UserId,
+                    CreatedOn = DateTime.UtcNow.AddSeconds(2),
+                    IsSticky = true,
+                    ModifiedOn = null,
+                    ThreadContent = "A bug thread thread blah blah blah...",
+                    ThreadId = Guid.NewGuid(),
+                    ThreadTitle = "Bug Thread 03",
                     TopicId = _forumTopics[4].TopicId
                 }
             };
@@ -222,7 +242,7 @@ namespace CgWebDataGenerator.BuildJob
                 new ForumReplyStruct(){
                     Content = "A reply, there is a bug dumbass",
                     CreatedBy = _currentUsers[rand.Next(0, _currentUsers.Count - 1)].UserId,
-                    CreatedOn = DateTime.Now,
+                    CreatedOn = DateTime.UtcNow,
                     ModifiedOn = null,
                     ParentThreadId = _forumThreads[6].ThreadId,
                     ReplyId = Guid.NewGuid()
@@ -230,7 +250,7 @@ namespace CgWebDataGenerator.BuildJob
                 new ForumReplyStruct(){
                     Content = "Found another one",
                     CreatedBy = _currentUsers[rand.Next(0, _currentUsers.Count - 1)].UserId,
-                    CreatedOn = DateTime.Now,
+                    CreatedOn = DateTime.UtcNow,
                     ModifiedOn = null,
                     ParentThreadId = _forumThreads[6].ThreadId,
                     ReplyId = Guid.NewGuid()
@@ -243,7 +263,7 @@ namespace CgWebDataGenerator.BuildJob
                 {
                     Content = "A reply, there is a bug dumbass # " + i.ToString(),
                     CreatedBy = _currentUsers[rand.Next(0, _currentUsers.Count - 1)].UserId,
-                    CreatedOn = DateTime.Now,
+                    CreatedOn = DateTime.UtcNow.AddSeconds(i),
                     ModifiedOn = null,
                     ParentThreadId = _forumThreads[6].ThreadId,
                     ReplyId = Guid.NewGuid()

@@ -1,7 +1,7 @@
 ﻿CREATE TABLE [dbo].[UserProfile]
 (
 	[UserId] [int] IDENTITY(1,1) NOT NULL,
-	[UserName] [nvarchar](56) NOT NULL,
+	[UserName] [nvarchar](56) UNIQUE NOT NULL,
 	[Email] [nvarchar](256) NOT NULL,
 	[Timezone] NVARCHAR(56) NOT NULL,
 	[PhoneNumber] [nvarchar](50) NULL,

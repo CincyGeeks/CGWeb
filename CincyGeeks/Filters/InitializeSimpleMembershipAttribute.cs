@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using WebMatrix.WebData;
 using CincyGeeksWebsite.Models;
 using CincyGeeksWebsite.Models.Account;
+using System.Configuration;
 
 namespace CincyGeeksWebsite.Filters
 {
@@ -39,7 +40,9 @@ namespace CincyGeeksWebsite.Filters
                         }
                     }
 
-                    WebSecurity.InitializeDatabaseConnection("DefaultConnection", "UserProfile", "UserId", "UserName", autoCreateTables: true);
+                    WebSecurity.InitializeDatabaseConnection("DefaultConnection", "UserProfile", "UserId", "UserName", false);
+
+                    ConnectionStringSettings settings = ConfigurationManager.ConnectionStrings["DefaultConnection"];
                 }
                 catch (Exception ex)
                 {

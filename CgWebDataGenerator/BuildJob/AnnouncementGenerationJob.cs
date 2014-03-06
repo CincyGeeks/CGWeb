@@ -27,7 +27,7 @@ namespace CgWebDataGenerator.BuildJob
                 {
                     new AnnouncementStruct(){
                         Content = "This is the content of announcement #1",
-                        CreateDate = DateTime.Now,
+                        CreateDate = DateTime.UtcNow,
                         CreatedByUser = _currentUsers.First().UserId,
                         IsPublic = true,
                         ModifiedByUser = null,
@@ -45,7 +45,7 @@ namespace CgWebDataGenerator.BuildJob
                     _announcements.Add(new AnnouncementStruct()
                     {
                         Content = String.Format("This is the content of announcement #{0}", iterator),
-                        CreateDate = DateTime.Now,
+                        CreateDate = DateTime.UtcNow,
                         CreatedByUser = createdBy.UserId,
                         IsPublic = false,
                         ModifiedByUser = null,
@@ -60,11 +60,11 @@ namespace CgWebDataGenerator.BuildJob
                 _announcements.Add(new AnnouncementStruct()
                 {
                     Content = "A modified announcement content!",
-                    CreateDate = DateTime.Now.AddMinutes(-5),
+                    CreateDate = DateTime.UtcNow.AddMinutes(-5),
                     CreatedByUser = createdBy.UserId,
                     IsPublic = true,
                     ModifiedByUser = createdBy.UserId,
-                    ModifiedDate = DateTime.Now,
+                    ModifiedDate = DateTime.UtcNow,
                     RestrictToRole = null,
                     Title = "A modified announcement."
                 });

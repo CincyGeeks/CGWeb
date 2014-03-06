@@ -40,9 +40,7 @@ namespace CincyGeeksWebsite.Controllers
 
         public ActionResult ViewForum(Guid forumId)
         {
-            ViewForumModel viewForumModel = new ViewForumModel(){
-                ForumTopics = new List<ForumTopicModel>()
-            };
+            ViewForumModel viewForumModel = new ViewForumModel(){};
             
             using (CGWebEntities entities = new CGWebEntities())
             {
@@ -51,26 +49,20 @@ namespace CincyGeeksWebsite.Controllers
                 if (!currentForum.IsPublic && !Request.IsAuthenticated)
                     return RedirectToAction("Login", "Account");
 
-                List<ForumTopic> topicsList;
                 if (Request.IsAuthenticated)
                 {
-
-                    topicsList = entities.ForumTopics.Where(FT => FT.ForumId.Equals(forumId)).ToList();
-                    foreach(ForumTopic topic in topicsList.OrderBy(FT => FT.TopicTitle))
-                        viewForumModel.ForumTopics.Add(topic.ConvertToForumTopicModel());
+                    viewForumModel = currentForum.ConvertToViewForumModel(true, false);
                 }
                 else
                 {
-                    topicsList = entities.ForumTopics.Where(FT => FT.ForumId.Equals(forumId) && FT.IsPublic).ToList();
-                    foreach(ForumTopic topic in topicsList.OrderBy(FT => FT.TopicTitle))
-                        viewForumModel.ForumTopics.Add(topic.ConvertToForumTopicModel());
+                    viewForumModel = currentForum.ConvertToViewForumModel(true, true);
                 }
             }
 
             return View(viewForumModel);
         }
 
-        public ActionResult ViewTopic(Guid topicId)
+        public ActionResult ViewTopic(ForumTopicRequestModel requestModel)
         {
             ViewTopicModel viewTopicModel = new ViewTopicModel(){
                 Threads = new List<ForumThreadModel>()
@@ -78,12 +70,71 @@ namespace CincyGeeksWebsite.Controllers
 
             using (CGWebEntities entities = new CGWebEntities())
             {
-                ForumTopic currentTopic = entities.ForumTopics.Where(T => T.TopicId.Equals(topicId)).Single();
+                ForumTopic currentTopic = entities.ForumTopics.Where(T => T.TopicId.Equals(requestModel.TopicId)).Single();
+                viewTopicModel.CurrentTopic = currentTopic.ConvertToForumTopicModel();
+                viewTopicModel.ParentForum = currentTopic.Forum.ConvertToViewForumModel(false, false);
 
                 if(!currentTopic.IsPublic && !Request.IsAuthenticated)
                     return RedirectToAction("Login", "Account");
 
-                foreach (ForumThread thread in entities.ForumThreads.Where(FT => FT.ForumTopic.Equals(topicId)).OrderBy(FT => FT.IsSticky).OrderByDescending(FT => FT.CreatedOn))
+                var currentTopicGroup = entities.ForumThreads.Where(FT => FT.ForumTopic.Equals(requestModel.TopicId));
+
+                int currentTopicViewLimit = Convert.ToInt32(ConfigurationManager.AppSettings["ForumTopicPagingLimit"]);
+                viewTopicModel.CurrentPage = requestModel.CurrentPage;
+                viewTopicModel.MaxPages = (int)Math.Ceiling((double)currentTopicGroup.Count() / (double)currentTopicViewLimit);
+
+                foreach (ForumThread thread in currentTopicGroup.OrderByDescending(FT => FT.CreatedOn).OrderByDescending(FT => FT.IsSticky).Skip(currentTopicViewLimit * requestModel.CurrentPage).Take(currentTopicViewLimit))
+                {
+                    viewTopicModel.Threads.Add(thread.ConvertToForumThreadModel(false));
+                }
+            }
+
+            return View(viewTopicModel);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "User")]
+        public ActionResult ViewTopic(Guid topicId, string threadTitle, string threadContent, bool isSticky)
+        {
+            ViewTopicModel viewTopicModel = new ViewTopicModel()
+            {
+                Threads = new List<ForumThreadModel>()
+            };
+
+            using (CGWebEntities entities = new CGWebEntities())
+            {
+                UserProfile currentUserProfile = entities.UserProfiles.Where(P => P.UserName.Equals(User.Identity.Name)).Single();
+
+                ForumThread newThread = new ForumThread()
+                {
+                    CreatedBy = currentUserProfile.UserId,
+                    CreatedOn = DateTime.UtcNow,
+                    ForumTopic = topicId,
+                    IsSticky = isSticky,
+                    ModifiedOn = null,
+                    ThreadContent = threadContent,
+                    ThreadId = Guid.NewGuid(),
+                    ThreadTitle = threadTitle
+                };
+
+                entities.ForumThreads.Add(newThread);
+                entities.SaveChanges();
+                ModelState.Clear();
+
+                ForumTopic currentTopic = entities.ForumTopics.Where(T => T.TopicId.Equals(topicId)).Single();
+                viewTopicModel.CurrentTopic = currentTopic.ConvertToForumTopicModel();
+                viewTopicModel.ParentForum = currentTopic.Forum.ConvertToViewForumModel(false, false);
+
+                if (!currentTopic.IsPublic && !Request.IsAuthenticated)
+                    return RedirectToAction("Login", "Account");
+
+                var currentTopicGroup = entities.ForumThreads.Where(FT => FT.ForumTopic.Equals(topicId));
+
+                int currentTopicViewLimit = Convert.ToInt32(ConfigurationManager.AppSettings["ForumTopicPagingLimit"]);
+                viewTopicModel.MaxPages = (int)Math.Ceiling((double)currentTopicGroup.Count() / (double)currentTopicViewLimit);
+                viewTopicModel.CurrentPage = viewTopicModel.MaxPages - 1;
+
+                foreach (ForumThread thread in currentTopicGroup.OrderByDescending(FT => FT.CreatedOn).OrderByDescending(FT => FT.IsSticky).Skip(currentTopicViewLimit * viewTopicModel.CurrentPage).Take(currentTopicViewLimit))
                 {
                     viewTopicModel.Threads.Add(thread.ConvertToForumThreadModel(false));
                 }
@@ -101,7 +152,9 @@ namespace CincyGeeksWebsite.Controllers
             using (CGWebEntities entities = new CGWebEntities())
             {
                 ForumThread currentThread = entities.ForumThreads.Where(FT => FT.ThreadId.Equals(requestModel.ThreadId)).Single();
-                
+
+                viewThreadModel.ParentTopic = currentThread.ParentForumTopic.ConvertToForumTopicModel();
+
                 if(!currentThread.ParentForumTopic.IsPublic && !Request.IsAuthenticated)
                     return RedirectToAction("Login", "Account");
 
@@ -112,6 +165,55 @@ namespace CincyGeeksWebsite.Controllers
                 viewThreadModel.CurrentThread = currentThread.ConvertToForumThreadModel(true);
 
                 foreach (ForumReply reply in currentThread.ForumReplies.OrderBy(FR => FR.CreatedOn).Skip(requestModel.CurrentPage * currentPagingLimit).Take(currentPagingLimit))
+                {
+                    viewThreadModel.Replies.Add(reply.ConvertToThreadReplyModel(true));
+                }
+            }
+
+            return View(viewThreadModel);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "User")]
+        public ActionResult ViewThread(Guid threadId, string content)
+        {
+            ViewThreadModel viewThreadModel = new ViewThreadModel()
+            {
+                Replies = new List<ForumReplyModel>()
+            };
+
+            using (CGWebEntities entities = new CGWebEntities())
+            {
+                UserProfile currentUserProfile = entities.UserProfiles.Where(P => P.UserName.Equals(User.Identity.Name)).Single();
+
+                ForumReply newReply = new ForumReply()
+                {
+                    CreatedBy = currentUserProfile.UserId,
+                    CreatedOn = DateTime.UtcNow,
+                    ModifiedOn = null,
+                    ParentThreadId = threadId,
+                    ReplyContent = content,
+                    ReplyId = Guid.NewGuid()
+                };
+
+                entities.ForumReplies.Add(newReply);
+                entities.SaveChanges();
+                ModelState.Clear();
+
+                ForumThread currentThread = entities.ForumThreads.Where(FT => FT.ThreadId.Equals(threadId)).Single();
+
+                viewThreadModel.ParentTopic = currentThread.ParentForumTopic.ConvertToForumTopicModel();
+
+                if (!currentThread.ParentForumTopic.IsPublic && !Request.IsAuthenticated)
+                    return RedirectToAction("Login", "Account");
+
+                int currentPagingLimit = Convert.ToInt32(ConfigurationManager.AppSettings["ForumReplyPagingLimit"]);
+                viewThreadModel.MaxPages = (int)Math.Ceiling((double)currentThread.ForumReplies.Count / (double)currentPagingLimit);
+                viewThreadModel.CurrentPage = viewThreadModel.MaxPages - 1;
+
+                viewThreadModel.CurrentThread = currentThread.ConvertToForumThreadModel(true);
+
+                foreach (ForumReply reply in currentThread.ForumReplies.OrderBy(FR => FR.CreatedOn).Skip(viewThreadModel.CurrentPage * currentPagingLimit).Take(currentPagingLimit))
                 {
                     viewThreadModel.Replies.Add(reply.ConvertToThreadReplyModel(true));
                 }

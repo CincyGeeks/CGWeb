@@ -1,13 +1,33 @@
 ﻿@model CincyGeeksWebsite.Models.Forum.ViewTopicModel
 
 @{
-    ViewBag.Title = "View Topic";
+    ViewBag.Title = Model.CurrentTopic.TopicTitle;
 }
 
-<h2>View Topic</h2>
+<p>
+    @Html.ActionLink(String.Format("<< Back to {0}", Model.ParentForum.ForumTitle), "ViewForum", new { forumId = Model.ParentForum.ForumId })
+</p>
+<h2>@Model.CurrentTopic.TopicTitle</h2>
+
+@if (Model.MaxPages > 1)
+{
+    Html.RenderAction("Paginator", new CincyGeeksWebsite.Models.Shared.PaginatorRenderModel()
+    {
+        ActionName = "ViewTopic",
+        ActionParamerType = new CincyGeeksWebsite.Models.Forum.ForumTopicRequestModel(),
+        ConstantValues = new Dictionary<string, object>()
+        {
+            {"TopicId", Model.CurrentTopic.TopicId}
+        },
+        CurrentPage = Model.CurrentPage,
+        MaxPage = Model.MaxPages,
+        PageValueMember = "CurrentPage"
+    });   
+}
+
 @foreach(CincyGeeksWebsite.Models.Forum.ForumThreadModel thread in Model.Threads)
 {
-    <div>
+    <div style="border:1px solid black; margin:5px;">
         <p>
         @if (thread.IsSticky)
         {
@@ -24,3 +44,39 @@
             }
     </div>
 }
+
+@if (Model.MaxPages > 1)
+{
+    Html.RenderAction("Paginator", new CincyGeeksWebsite.Models.Shared.PaginatorRenderModel()
+    {
+        ActionName = "ViewTopic",
+        ActionParamerType = new CincyGeeksWebsite.Models.Forum.ForumTopicRequestModel(),
+        ConstantValues = new Dictionary<string, object>()
+        {
+            {"TopicId", Model.CurrentTopic.TopicId}
+        },
+        CurrentPage = Model.CurrentPage,
+        MaxPage = Model.MaxPages,
+        PageValueMember = "CurrentPage"
+    });   
+}
+
+<div style="border:1px solid black;">
+@using (@Html.BeginForm("ViewTopic", "Forum", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    @Html.Hidden("topicId", Model.CurrentTopic.TopicId)
+    <p>Thread Title:</p>
+    @Html.TextBox("threadTitle")
+    <p>Thread Conent:</p>
+    @Html.TextArea("threadContent");
+    <p>Is Sticky:</p>
+    @Html.CheckBox("isSticky");
+    <br />
+    <input type="submit" value="Reply"/>
+}
+</div>
+
+<p>
+    @Html.ActionLink(String.Format("<< Back to {0}", Model.ParentForum.ForumTitle), "ViewForum", new { forumId = Model.ParentForum.ForumId })
+</p>

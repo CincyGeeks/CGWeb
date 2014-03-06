@@ -3,7 +3,9 @@
 @{
     ViewBag.Title = Model.CurrentThread.ThreadTitle;
 }
-
+<p>
+    @Html.ActionLink(String.Format("<< Back to {0}", Model.ParentTopic.TopicTitle), "ViewTopic", new { topicId = Model.ParentTopic.TopicId })
+</p>
 <h2>
     @if (Model.CurrentThread.IsSticky)
     {
@@ -11,7 +13,7 @@
     }
     @Model.CurrentThread.ThreadTitle
 </h2>
-@if (Model.MaxPages > 0)
+@if (Model.MaxPages > 1)
 {
     Html.RenderAction("Paginator", new CincyGeeksWebsite.Models.Shared.PaginatorRenderModel()
     {
@@ -75,7 +77,7 @@
     </div>
 }
 
-@if (Model.MaxPages > 0)
+@if (Model.MaxPages > 1)
 {
     Html.RenderAction("Paginator", new CincyGeeksWebsite.Models.Shared.PaginatorRenderModel()
     {
@@ -90,3 +92,20 @@
         PageValueMember = "CurrentPage"
     });   
 }
+
+<div style="border:1px solid black;">
+@using(@Html.BeginForm("ViewThread", "Forum", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    @Html.Hidden("threadId", Model.CurrentThread.ThreadId)
+    <p>Reply Conent:</p>
+    @Html.TextArea("content");
+    <br />
+    <input type="submit" value="Reply"/>
+}
+</div>
+
+<p>
+    @Html.ActionLink(String.Format("<< Back to {0}", Model.ParentTopic.TopicTitle), "ViewTopic", new { topicId = Model.ParentTopic.TopicId })
+</p>
+

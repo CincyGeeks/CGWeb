@@ -13,7 +13,7 @@ namespace CincyGeeksWebsite.Utility
         public RandomString(int length)
         {
             _randomValue = new char[length];
-            _rand = new Random((int)DateTime.Now.Ticks);
+            _rand = new Random((int)DateTime.UtcNow.Ticks);
 
             for (int i = 0; i < length; i++)
             {
