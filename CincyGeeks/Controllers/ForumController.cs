@@ -7,6 +7,9 @@ using System.Web;
 using System.Web.Mvc;
 using CincyGeeksWebsite.Data;
 using System.Configuration;
+using CincyGeeksWebsite.Utility;
+using CincyGeeksWebsite.Models.Forum.PartialModels;
+using System.IO;
 
 namespace CincyGeeksWebsite.Controllers
 {
@@ -62,6 +65,31 @@ namespace CincyGeeksWebsite.Controllers
             return View(viewForumModel);
         }
 
+        [HttpPost]
+        [Authorize(Roles = "User")]
+        public ActionResult ViewForum(Guid forumId, string topicTitle, string topicDescription, bool isPublic)
+        {
+            using (CGWebEntities entities = new CGWebEntities())
+            {
+                UserProfile currentUserProfile = entities.UserProfiles.Where(P => P.UserName.Equals(User.Identity.Name)).Single();
+
+                ForumTopic newTopic = new ForumTopic()
+                {
+                    CreatedBy = currentUserProfile.UserId,
+                    CreatedOn = DateTime.UtcNow,
+                    ForumId = forumId,
+                    IsPublic = isPublic,
+                    TopicDescription = topicDescription,
+                    TopicId = Guid.NewGuid(),
+                    TopicTitle = HtmlSanitizerUtility.SanitizeInputStringNoHTML(topicTitle)
+                };
+                entities.ForumTopics.Add(newTopic);
+                entities.SaveChanges();
+            }
+
+            return ViewForum(forumId);
+        }
+
         public ActionResult ViewTopic(ForumTopicRequestModel requestModel)
         {
             ViewTopicModel viewTopicModel = new ViewTopicModel(){
@@ -114,7 +142,7 @@ namespace CincyGeeksWebsite.Controllers
                     ModifiedOn = null,
                     ThreadContent = threadContent,
                     ThreadId = Guid.NewGuid(),
-                    ThreadTitle = threadTitle
+                    ThreadTitle = HtmlSanitizerUtility.SanitizeInputStringNoHTML(threadTitle)
                 };
 
                 entities.ForumThreads.Add(newThread);
@@ -175,7 +203,7 @@ namespace CincyGeeksWebsite.Controllers
 
         [HttpPost]
         [Authorize(Roles = "User")]
-        public ActionResult ViewThread(Guid threadId, string content)
+        public ActionResult ViewThread(CreateNewReplyViewModel model)
         {
             ViewThreadModel viewThreadModel = new ViewThreadModel()
             {
@@ -191,8 +219,8 @@ namespace CincyGeeksWebsite.Controllers
                     CreatedBy = currentUserProfile.UserId,
                     CreatedOn = DateTime.UtcNow,
                     ModifiedOn = null,
-                    ParentThreadId = threadId,
-                    ReplyContent = content,
+                    ParentThreadId = model.ThreadId,
+                    ReplyContent = model.ReplyContent,
                     ReplyId = Guid.NewGuid()
                 };
 
@@ -200,7 +228,7 @@ namespace CincyGeeksWebsite.Controllers
                 entities.SaveChanges();
                 ModelState.Clear();
 
-                ForumThread currentThread = entities.ForumThreads.Where(FT => FT.ThreadId.Equals(threadId)).Single();
+                ForumThread currentThread = entities.ForumThreads.Where(FT => FT.ThreadId.Equals(model.ThreadId)).Single();
 
                 viewThreadModel.ParentTopic = currentThread.ParentForumTopic.ConvertToForumTopicModel();
 
@@ -221,5 +249,62 @@ namespace CincyGeeksWebsite.Controllers
 
             return View(viewThreadModel);
         }
+
+        #region Partial Implentations
+        public PartialViewResult ForumCreateNewReply(CreateNewReplyRequestModel requestModel)
+        {
+            return PartialView("Partials/_CreateNewReplyPartial", new CreateNewReplyViewModel(){
+                ThreadId = requestModel.ThreadId,
+                ContainerName = requestModel.ContainerName
+            });
+        }
+
+        public PartialViewResult ForumQuoteAReply(QuoteReplyRequestModel requestModel)
+        {
+            CreateNewReplyViewModel replyViewModel = new CreateNewReplyViewModel(){
+                ThreadId = requestModel.ThreadId,
+                ContainerName = requestModel.ContainerName
+            };
+
+            using (CGWebEntities entities = new CGWebEntities())
+            {
+                ForumReply selectedReply = entities.ForumReplies.Where(FR => FR.ReplyId.Equals(requestModel.ReplyId)).Single();
+                using (StringReader reader = new StringReader(selectedReply.ReplyContent))
+                {
+                    string line;
+                    while ((line = reader.ReadLine()) != null)
+                    {
+                        replyViewModel.ReplyContent += ">" + line;
+                    }
+                }
+            }
+
+            return PartialView("Partials/_CreateNewReplyPartial", replyViewModel);
+        }
+
+        public PartialViewResult ForumQuoteAThread(QuoteReplyRequestModel requestModel)
+        {
+            CreateNewReplyViewModel replyViewModel = new CreateNewReplyViewModel()
+            {
+                ThreadId = requestModel.ThreadId,
+                ContainerName = requestModel.ContainerName
+            };
+
+            using (CGWebEntities entities = new CGWebEntities())
+            {
+                ForumThread selectedThread = entities.ForumThreads.Where(FT => FT.ThreadId.Equals(requestModel.ReplyId)).Single();
+                using (StringReader reader = new StringReader(selectedThread.ThreadContent))
+                {
+                    string line;
+                    while ((line = reader.ReadLine()) != null)
+                    {
+                        replyViewModel.ReplyContent += ">" + line;
+                    }
+                }
+            }
+
+            return PartialView("Partials/_CreateNewReplyPartial", replyViewModel);
+        }
+        #endregion
     }
 }

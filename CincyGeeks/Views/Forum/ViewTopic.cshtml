@@ -25,6 +25,10 @@
     });   
 }
 
+@if (Model.Threads.Count == 0)
+{
+    <h3>Nothing here! You should start a new thread.</h3>
+}
 @foreach(CincyGeeksWebsite.Models.Forum.ForumThreadModel thread in Model.Threads)
 {
     <div style="border:1px solid black; margin:5px;">
@@ -73,7 +77,7 @@
     <p>Is Sticky:</p>
     @Html.CheckBox("isSticky");
     <br />
-    <input type="submit" value="Reply"/>
+    <input type="submit" value="Post Thread"/>
 }
 </div>
 

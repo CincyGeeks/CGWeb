@@ -1,4 +1,5 @@
 ﻿using CGDataEntities;
+using CincyGeeksWebsite.Filters;
 using CincyGeeksWebsite.Models;
 using CincyGeeksWebsite.Models.Shared;
 using System;
@@ -11,6 +12,7 @@ using System.Web.Security;
 
 namespace CincyGeeksWebsite.Controllers
 {
+    [InitializeSimpleMembership]
     public class CGBaseController : Controller
     {
         //
@@ -19,25 +21,7 @@ namespace CincyGeeksWebsite.Controllers
         [AllowAnonymous]
         public PartialViewResult Navigation()
         {
-            if (User.Identity.IsAuthenticated)
-            {
-                using (CGWebEntities entities = new CGWebEntities())
-                {
-                    NavigationModel navModel = new NavigationModel()
-                    {
-                        CurrentUserRoles = entities.webpages_Roles.Where(R => R.UserProfiles.Any(P => P.UserName.Equals(User.Identity.Name))).Select(R => R.RoleName).ToList()
-                    };
-                    return PartialView("_NavigationPartial", navModel);
-                }
-            }
-            else
-            {
-                NavigationModel navModel = new NavigationModel()
-                {
-                    CurrentUserRoles = new List<string>()
-                };
-                return PartialView("_NavigationPartial", navModel);
-            }
+            return PartialView("_NavigationPartial");
         }
 
         [AllowAnonymous]

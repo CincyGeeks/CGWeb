@@ -42,6 +42,9 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CsQuery">
+      <HintPath>..\packages\CsQuery.1.3.4\lib\net40\CsQuery.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\EntityFramework.6.0.2\lib\net45\EntityFramework.dll</HintPath>
@@ -49,6 +52,12 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\EntityFramework.6.0.2\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="HtmlSanitizer">
+      <HintPath>..\packages\HtmlSanitizer.1.0.4927.30873\lib\net45\HtmlSanitizer.dll</HintPath>
+    </Reference>
+    <Reference Include="MarkdownSharp">
+      <HintPath>..\packages\MarkdownSharp.1.13.0.0\lib\35\MarkdownSharp.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
@@ -213,12 +222,16 @@
     <Compile Include="Models\Account\UsersContext.cs" />
     <Compile Include="Models\Administrative\RoleManagementModel.cs" />
     <Compile Include="Models\Administrative\UserDashboardModel.cs" />
+    <Compile Include="Models\Forum\PartialModels\CreateNewReplyModel.cs" />
+    <Compile Include="Models\Forum\PartialModels\CreateNewReplyRequestModel.cs" />
+    <Compile Include="Models\Forum\PartialModels\CreateNewThreadModel.cs" />
     <Compile Include="Models\Forum\ForumIndexModel.cs" />
     <Compile Include="Models\Forum\ForumThreadModel.cs" />
     <Compile Include="Models\Forum\ForumThreadRequestModel.cs" />
     <Compile Include="Models\Forum\ForumTopicModel.cs" />
     <Compile Include="Models\Forum\ForumReplyModel.cs" />
     <Compile Include="Models\Forum\ForumTopicRequestModel.cs" />
+    <Compile Include="Models\Forum\PartialModels\QuoteReplyModel.cs" />
     <Compile Include="Models\Forum\ViewForumModel.cs" />
     <Compile Include="Models\Forum\ViewThreadModel.cs" />
     <Compile Include="Models\Forum\ViewTopicModel.cs" />
@@ -226,11 +239,12 @@
     <Compile Include="Models\Shared\AnnouncementPartialModel.cs" />
     <Compile Include="Models\Shared\AvatarPartialModel.cs" />
     <Compile Include="Models\Shared\AvatarRenderModel.cs" />
-    <Compile Include="Models\Shared\NavigationModel.cs" />
     <Compile Include="Models\Shared\PaginatorPartialModel.cs" />
     <Compile Include="Models\Shared\PaginatorRenderModel.cs" />
     <Compile Include="Models\Shared\UserProfile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utility\HtmlSanitizerUtility.cs" />
+    <Compile Include="Utility\MarkdownHelper.cs" />
     <Compile Include="Utility\RandomString.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -345,7 +359,6 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config" />
-    <Content Include="Views\Shared\_NavigationPartialOld.cshtml" />
     <Content Include="Views\Shared\_NavigationPartial.cshtml" />
     <Content Include="Views\Administration\Index.cshtml" />
     <Content Include="Views\Administration\UserDashboard.cshtml" />
@@ -361,6 +374,7 @@
     <Content Include="Views\Forum\ViewTopic.cshtml" />
     <Content Include="Views\Forum\ViewThread.cshtml" />
     <Content Include="Views\Shared\_PaginatorPartial.cshtml" />
+    <Content Include="Views\Forum\Partials\_CreateNewReplyPartial.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

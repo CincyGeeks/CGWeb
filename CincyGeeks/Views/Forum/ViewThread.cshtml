@@ -31,7 +31,7 @@
 
 @if (Model.CurrentPage == 0)
 {
-    <div style="overflow:auto;">
+    <div style="overflow:auto; border:1px solid black; margin: 5px;">
         <div style="float:left; width:12%">
             @{
                 Html.RenderAction("Avatar", new CincyGeeksWebsite.Models.Shared.AvatarRenderModel()
@@ -43,19 +43,28 @@
         </div>
         <div style="float:left; width:83%;">    
             <p>
-                Created By: @Model.CurrentThread.CreatedBy on @Model.CurrentThread.CreatedOn
+                @Html.Markdown(Model.CurrentThread.ThreadContent)
             </p>
             <hr />
             <p>
-                @Model.CurrentThread.ThreadContent
+                Created By: @Model.CurrentThread.CreatedBy on @Model.CurrentThread.CreatedOn
             </p>
+            @Ajax.ActionLink("Quote...", "ForumQuoteAThread",
+            new CincyGeeksWebsite.Models.Forum.PartialModels.QuoteReplyRequestModel(){
+                ReplyId = Model.CurrentThread.ThreadId,
+                ThreadId = Model.CurrentThread.ThreadId,
+                ContainerName = "quoteContainer"
+            },
+            new AjaxOptions(){
+                OnSuccess = "CreateQuoteReplyWindow(data, 'quoteContainer')"
+            })
         </div>
     </div>
 }
 
 @foreach (CincyGeeksWebsite.Models.Forum.ForumReplyModel reply in Model.Replies)
 {
-    <div style="overflow:auto;">
+    <div style="overflow:auto; border:1px solid black; margin: 5px;">
         <div style="float:left; width:12%">
             @{
                 Html.RenderAction("Avatar", new CincyGeeksWebsite.Models.Shared.AvatarRenderModel()
@@ -66,13 +75,22 @@
             }
         </div>
         <div style="float:left; width:83%;">
-            <p>@reply.ReplyContent</p>
+            <p>@Html.Markdown(reply.ReplyContent)</p>
             <hr />
             <p> Created By: @reply.CreatedBy on @reply.CreatedOn </p>
             @if (!String.IsNullOrEmpty(reply.ModifiedOn))
             {
                 <p>| Modified On: @reply.ModifiedOn</p>
             }
+            @Ajax.ActionLink("Quote...", "ForumQuoteAReply", 
+            new CincyGeeksWebsite.Models.Forum.PartialModels.QuoteReplyRequestModel(){
+                ReplyId = reply.ReplyId,
+                ThreadId = Model.CurrentThread.ThreadId,
+                ContainerName = "quoteContainer"
+            },
+            new AjaxOptions(){
+                OnSuccess = "CreateQuoteReplyWindow(data, 'quoteContainer')"
+            })
         </div>  
     </div>
 }
@@ -93,19 +111,36 @@
     });   
 }
 
-<div style="border:1px solid black;">
-@using(@Html.BeginForm("ViewThread", "Forum", FormMethod.Post))
-{
-    @Html.AntiForgeryToken()
-    @Html.Hidden("threadId", Model.CurrentThread.ThreadId)
-    <p>Reply Conent:</p>
-    @Html.TextArea("content");
-    <br />
-    <input type="submit" value="Reply"/>
+<a onclick="CreateNewOnClick()" href="#">Create New Reply</a>
+@{
+    Html.RenderAction("ForumCreateNewReply", new CincyGeeksWebsite.Models.Forum.PartialModels.CreateNewReplyRequestModel()
+    {
+        ThreadId = Model.CurrentThread.ThreadId,
+        ContainerName = "createNewReplyForm"
+    });
 }
-</div>
+
+<div id="quoteDiv"  style="display:none;"></div>
+
 
 <p>
     @Html.ActionLink(String.Format("<< Back to {0}", Model.ParentTopic.TopicTitle), "ViewTopic", new { topicId = Model.ParentTopic.TopicId })
 </p>
+
+@section scripts{
+    <script type="text/javascript">
+        function CreateNewOnClick() {
+            $("#createNewReplyForm").dialog({ modal: true, minWidth: 600, show: { effect: "slide", durration: 150 } });
+        };
+
+        function QuoteDivOnChange() {
+            $("#quoteContainer").dialog({ modal: true, minWidth: 600, show: { effect: "slide", durration: 150 } });
+        }
+
+        function CreateQuoteReplyWindow(data, containerName) {
+            $("#quoteDiv").html(data);
+            $("#" + containerName).dialog({ modal: true, minWidth: 600, show: { effect: "slide", durration: 150 } });
+        }
+    </script>    
+}
 

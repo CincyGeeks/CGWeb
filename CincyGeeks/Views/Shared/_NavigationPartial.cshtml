@@ -1,13 +1,7 @@
-﻿@model CincyGeeksWebsite.Models.Shared.NavigationModel
-
-@{
-    ViewBag.Title = "_NavigationPartial"; 
-}
-
-<ul id="menu">
+﻿<ul id="menu">
     <li>@Html.ActionLink("Home", "Index", "Home")</li>
     <li>@Html.ActionLink("Forum", "Index","Forum")</li>
-    @if (Model.CurrentUserRoles.Contains("Administrator"))
+    @if (Roles.IsUserInRole("Administrator"))
     {
         <li>@Html.ActionLink("Administration", "Index", "Administration")</li>
     }

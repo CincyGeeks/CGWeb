@@ -1,18 +1,45 @@
 ﻿@model CincyGeeksWebsite.Models.Forum.ViewForumModel
 
 @{
-    ViewBag.Title = "View Forum";
+    ViewBag.Title = Model.ForumTitle;
 }
 
-<h2>ViewForumView</h2>
+<p>
+    @Html.ActionLink("<< Back To Forums Overview", "Index")
+</p>
+
+<h2>@Model.ForumTitle</h2>
 @foreach (CincyGeeksWebsite.Models.Forum.ForumTopicModel topic in Model.ForumTopics)
 {
-    <div>
+    <div style="border:1px solid black; margin:5px;">
         <p>@topic.TopicTitle</p>
         <hr />
-        <p>@topic.TopicDescription</p><br />
+        <p>@Html.Markdown(topic.TopicDescription)</p><br />
         @Html.ActionLink("View Topic", "ViewTopic", new { topicId = @topic.TopicId })
         <hr />
         <small>Created By: @topic.CreatedBy on @topic.CreatedOn</small>
     </div>
 }
+<div style="border:1px solid black; margin:5px;">
+    @using (Html.BeginForm("ViewForum", "Forum", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        @Html.Hidden("forumId", Model.ForumId)
+        <p>Topic Title:</p>
+        @Html.TextBox("topicTitle")
+        <p>Topic Description:</p>
+        @Html.TextArea("topicDescription")
+        if (Roles.IsUserInRole("Moderator"))
+        {
+            <p>
+                Is Public:
+                @Html.CheckBox("isPublic")
+            </p>
+        }
+        <input type="submit" value="Add New Topic" />
+    }
+</div>
+
+<p>
+    @Html.ActionLink("<< Back To Forums Overview", "Index")
+</p>
