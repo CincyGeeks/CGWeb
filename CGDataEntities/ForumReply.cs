@@ -20,6 +20,7 @@ namespace CGDataEntities
         public int CreatedBy { get; set; }
         public System.DateTime CreatedOn { get; set; }
         public Nullable<System.DateTime> ModifiedOn { get; set; }
+        public bool IsDeleted { get; set; }
     
         public virtual ForumThread ForumThread { get; set; }
         public virtual UserProfile UserProfile { get; set; }

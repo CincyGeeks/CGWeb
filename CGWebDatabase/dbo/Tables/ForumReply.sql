@@ -7,6 +7,7 @@
     [CreatedBy] INT NOT NULL, 
     [CreatedOn] DATETIME NOT NULL DEFAULT GETDATE(), 
     [ModifiedOn] DATETIME NULL, 
+    [IsDeleted] BIT NOT NULL DEFAULT 0, 
     CONSTRAINT [FK_ForumReply_ForumThread] FOREIGN KEY ([ParentThreadId]) REFERENCES [dbo].[ForumThread]([ThreadId]), 
     --CONSTRAINT [FK_ForumReply_ReplyTo] FOREIGN KEY ([ParentReplyId]) REFERENCES [dbo].[ForumReply]([ReplyId]), 
     CONSTRAINT [FK_ForumReply_UserProfile] FOREIGN KEY ([CreatedBy]) REFERENCES [dbo].[UserProfile]([UserId])

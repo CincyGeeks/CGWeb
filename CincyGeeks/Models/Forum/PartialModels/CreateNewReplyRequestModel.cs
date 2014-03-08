@@ -9,5 +9,6 @@ namespace CincyGeeksWebsite.Models.Forum.PartialModels
     {
         public string ContainerName { get; set; }
         public Guid ThreadId { get; set; }
+        public Guid ReplyId { get; set; }
     }
 }

@@ -15,7 +15,7 @@ namespace CincyGeeksWebsite.Data
             {
                 CreatedBy = thread.UserProfile.UserName,
                 CreatedById = thread.UserProfile.UserId,
-                IsSticky = thread.IsSticky.HasValue ? thread.IsSticky.Value : false,
+                IsSticky = thread.IsSticky,
                 CreatedOn = thread.CreatedOn.ToShortDateString() + thread.CreatedOn.ToShortTimeString(),
                 ModifiedOn = thread.ModifiedOn.HasValue ? thread.ModifiedOn.Value.ToShortDateString() + thread.ModifiedOn.Value.ToShortTimeString() : "",
                 ThreadId = thread.ThreadId,

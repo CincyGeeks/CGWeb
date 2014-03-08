@@ -259,7 +259,7 @@ namespace CincyGeeksWebsite.Controllers
             });
         }
 
-        public PartialViewResult ForumQuoteAReply(QuoteReplyRequestModel requestModel)
+        public PartialViewResult ForumQuoteAReply(CreateNewReplyRequestModel requestModel)
         {
             CreateNewReplyViewModel replyViewModel = new CreateNewReplyViewModel(){
                 ThreadId = requestModel.ThreadId,
@@ -282,7 +282,7 @@ namespace CincyGeeksWebsite.Controllers
             return PartialView("Partials/_CreateNewReplyPartial", replyViewModel);
         }
 
-        public PartialViewResult ForumQuoteAThread(QuoteReplyRequestModel requestModel)
+        public PartialViewResult ForumQuoteAThread(CreateNewReplyRequestModel requestModel)
         {
             CreateNewReplyViewModel replyViewModel = new CreateNewReplyViewModel()
             {

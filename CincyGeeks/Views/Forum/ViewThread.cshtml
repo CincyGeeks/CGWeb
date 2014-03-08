@@ -50,7 +50,7 @@
                 Created By: @Model.CurrentThread.CreatedBy on @Model.CurrentThread.CreatedOn
             </p>
             @Ajax.ActionLink("Quote...", "ForumQuoteAThread",
-            new CincyGeeksWebsite.Models.Forum.PartialModels.QuoteReplyRequestModel(){
+            new CincyGeeksWebsite.Models.Forum.PartialModels.CreateNewReplyRequestModel(){
                 ReplyId = Model.CurrentThread.ThreadId,
                 ThreadId = Model.CurrentThread.ThreadId,
                 ContainerName = "quoteContainer"
@@ -83,7 +83,7 @@
                 <p>| Modified On: @reply.ModifiedOn</p>
             }
             @Ajax.ActionLink("Quote...", "ForumQuoteAReply", 
-            new CincyGeeksWebsite.Models.Forum.PartialModels.QuoteReplyRequestModel(){
+            new CincyGeeksWebsite.Models.Forum.PartialModels.CreateNewReplyRequestModel(){
                 ReplyId = reply.ReplyId,
                 ThreadId = Model.CurrentThread.ThreadId,
                 ContainerName = "quoteContainer"

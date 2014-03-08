@@ -231,7 +231,6 @@
     <Compile Include="Models\Forum\ForumTopicModel.cs" />
     <Compile Include="Models\Forum\ForumReplyModel.cs" />
     <Compile Include="Models\Forum\ForumTopicRequestModel.cs" />
-    <Compile Include="Models\Forum\PartialModels\QuoteReplyModel.cs" />
     <Compile Include="Models\Forum\ViewForumModel.cs" />
     <Compile Include="Models\Forum\ViewThreadModel.cs" />
     <Compile Include="Models\Forum\ViewTopicModel.cs" />

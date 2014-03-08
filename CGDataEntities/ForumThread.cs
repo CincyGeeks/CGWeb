@@ -25,8 +25,9 @@ namespace CGDataEntities
         public string ThreadContent { get; set; }
         public int CreatedBy { get; set; }
         public System.DateTime CreatedOn { get; set; }
-        public Nullable<bool> IsSticky { get; set; }
+        public bool IsSticky { get; set; }
         public Nullable<System.DateTime> ModifiedOn { get; set; }
+        public bool IsDeleted { get; set; }
     
         public virtual ForumTopic ParentForumTopic { get; set; }
         public virtual UserProfile UserProfile { get; set; }

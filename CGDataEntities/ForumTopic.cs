@@ -26,6 +26,7 @@ namespace CGDataEntities
         public bool IsPublic { get; set; }
         public int CreatedBy { get; set; }
         public System.DateTime CreatedOn { get; set; }
+        public bool IsDeleted { get; set; }
     
         public virtual Forum Forum { get; set; }
         public virtual ICollection<ForumThread> ForumThreads { get; set; }

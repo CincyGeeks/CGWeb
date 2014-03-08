@@ -22,6 +22,7 @@ namespace CGDataEntities
         public System.Guid ForumId { get; set; }
         public string ForumTitle { get; set; }
         public bool IsPublic { get; set; }
+        public bool IsDeleted { get; set; }
     
         public virtual ICollection<ForumTopic> ForumTopics { get; set; }
     }

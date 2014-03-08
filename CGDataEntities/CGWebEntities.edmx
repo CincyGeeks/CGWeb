@@ -26,6 +26,7 @@
           <Property Name="ForumId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="ForumTitle" Type="nchar" MaxLength="128" Nullable="false" />
           <Property Name="IsPublic" Type="bit" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="ForumReply">
           <Key>
@@ -37,6 +38,7 @@
           <Property Name="CreatedBy" Type="int" Nullable="false" />
           <Property Name="CreatedOn" Type="datetime" Nullable="false" />
           <Property Name="ModifiedOn" Type="datetime" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="ForumThread">
           <Key>
@@ -49,7 +51,8 @@
           <Property Name="CreatedBy" Type="int" Nullable="false" />
           <Property Name="CreatedOn" Type="datetime" Nullable="false" />
           <Property Name="ModifiedOn" Type="datetime" />
-          <Property Name="IsSticky" Type="bit" />
+          <Property Name="IsSticky" Type="bit" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="ForumTopic">
           <Key>
@@ -62,6 +65,7 @@
           <Property Name="IsPublic" Type="bit" Nullable="false" />
           <Property Name="CreatedBy" Type="int" Nullable="false" />
           <Property Name="CreatedOn" Type="datetime" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Service">
           <Key>
@@ -535,6 +539,7 @@
           <Property Name="ForumTitle" Type="String" Nullable="false" MaxLength="128" FixedLength="true" Unicode="true" />
           <Property Name="IsPublic" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="ForumTopics" Relationship="CGWebModel.FK_ForumTopic_Forum" FromRole="Forum" ToRole="ForumTopic" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="ForumThread">
           <Key>
@@ -548,9 +553,10 @@
           <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="ParentForumTopic" Relationship="CGWebModel.FK_ForumThread_Forum" FromRole="ForumThread" ToRole="ForumTopic" />
           <NavigationProperty Name="UserProfile" Relationship="CGWebModel.FK_ForumThread_UserProfile" FromRole="ForumThread" ToRole="UserProfile" />
-          <Property Name="IsSticky" Type="Boolean" />
+          <Property Name="IsSticky" Type="Boolean" Nullable="false" />
           <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
           <NavigationProperty Name="ForumReplies" Relationship="CGWebModel.FK_ForumReply_ForumThread" FromRole="ForumThread" ToRole="ForumReply" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="ForumTopic">
           <Key>
@@ -566,6 +572,7 @@
           <NavigationProperty Name="Forum" Relationship="CGWebModel.FK_ForumTopic_Forum" FromRole="ForumTopic" ToRole="Forum" />
           <NavigationProperty Name="ForumThreads" Relationship="CGWebModel.FK_ForumThread_Forum" FromRole="ForumTopic" ToRole="ForumThread" />
           <NavigationProperty Name="UserProfile" Relationship="CGWebModel.FK_ForumTopic_UserProfile" FromRole="ForumTopic" ToRole="UserProfile" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
         </EntityType>
         <Association Name="FK_ForumTopic_Forum">
           <End Type="CGWebModel.Forum" Role="Forum" Multiplicity="1" />
@@ -627,6 +634,7 @@
           <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
           <NavigationProperty Name="ForumThread" Relationship="CGWebModel.FK_ForumReply_ForumThread" FromRole="ForumReply" ToRole="ForumThread" />
           <NavigationProperty Name="UserProfile" Relationship="CGWebModel.FK_ForumReply_UserProfile" FromRole="ForumReply" ToRole="UserProfile" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
         </EntityType>
         <Association Name="FK_ForumReply_ForumThread">
           <End Type="CGWebModel.ForumThread" Role="ForumThread" Multiplicity="1" />
@@ -751,6 +759,7 @@
           <EntitySetMapping Name="Forums">
             <EntityTypeMapping TypeName="CGWebModel.Forum">
               <MappingFragment StoreEntitySet="Forum">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="IsPublic" ColumnName="IsPublic" />
                 <ScalarProperty Name="ForumTitle" ColumnName="ForumTitle" />
                 <ScalarProperty Name="ForumId" ColumnName="ForumId" />
@@ -760,6 +769,7 @@
           <EntitySetMapping Name="ForumThreads">
             <EntityTypeMapping TypeName="CGWebModel.ForumThread">
               <MappingFragment StoreEntitySet="ForumThread">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
                 <ScalarProperty Name="IsSticky" ColumnName="IsSticky" />
                 <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
@@ -774,6 +784,7 @@
           <EntitySetMapping Name="ForumTopics">
             <EntityTypeMapping TypeName="CGWebModel.ForumTopic">
               <MappingFragment StoreEntitySet="ForumTopic">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
                 <ScalarProperty Name="IsPublic" ColumnName="IsPublic" />
@@ -787,6 +798,7 @@
           <EntitySetMapping Name="ForumReplies">
             <EntityTypeMapping TypeName="CGWebModel.ForumReply">
               <MappingFragment StoreEntitySet="ForumReply">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
                 <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
