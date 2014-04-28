@@ -31,68 +31,12 @@
 
 @if (Model.CurrentPage == 0)
 {
-    <div style="overflow:auto; border:1px solid black; margin: 5px;">
-        <div style="float:left; width:12%">
-            @{
-                Html.RenderAction("Avatar", new CincyGeeksWebsite.Models.Shared.AvatarRenderModel()
-                {
-                    PictureOnly = false,
-                    UserId = Model.CurrentThread.CreatedById
-                });
-            }
-        </div>
-        <div style="float:left; width:83%;">    
-            <p>
-                @Html.Markdown(Model.CurrentThread.ThreadContent)
-            </p>
-            <hr />
-            <p>
-                Created By: @Model.CurrentThread.CreatedBy on @Model.CurrentThread.CreatedOn
-            </p>
-            @Ajax.ActionLink("Quote...", "ForumQuoteAThread",
-            new CincyGeeksWebsite.Models.Forum.PartialModels.CreateNewReplyRequestModel(){
-                ReplyId = Model.CurrentThread.ThreadId,
-                ThreadId = Model.CurrentThread.ThreadId,
-                ContainerName = "quoteContainer"
-            },
-            new AjaxOptions(){
-                OnSuccess = "CreateQuoteReplyWindow(data, 'quoteContainer')"
-            })
-        </div>
-    </div>
+    Html.RenderPartial("Partials/_Thread", Model.CurrentThread);
 }
 
 @foreach (CincyGeeksWebsite.Models.Forum.ForumReplyModel reply in Model.Replies)
 {
-    <div style="overflow:auto; border:1px solid black; margin: 5px;">
-        <div style="float:left; width:12%">
-            @{
-                Html.RenderAction("Avatar", new CincyGeeksWebsite.Models.Shared.AvatarRenderModel()
-                {
-                    PictureOnly = false,
-                    UserId = reply.CreatedById
-                });
-            }
-        </div>
-        <div style="float:left; width:83%;">
-            <p>@Html.Markdown(reply.ReplyContent)</p>
-            <hr />
-            <p> Created By: @reply.CreatedBy on @reply.CreatedOn </p>
-            @if (!String.IsNullOrEmpty(reply.ModifiedOn))
-            {
-                <p>| Modified On: @reply.ModifiedOn</p>
-            }
-            @Ajax.ActionLink("Quote...", "ForumQuoteAReply", 
-            new CincyGeeksWebsite.Models.Forum.PartialModels.CreateNewReplyRequestModel(){
-                ReplyId = reply.ReplyId,
-                ThreadId = Model.CurrentThread.ThreadId,
-                ContainerName = "quoteContainer"
-            },
-            new AjaxOptions(){
-                OnSuccess = "CreateQuoteReplyWindow(data, 'quoteContainer')"
-            })
-        </div>  
-    </div>
+    
 }
 
 @if (Model.MaxPages > 1)
@@ -103,25 +47,14 @@
         ActionParamerType = new CincyGeeksWebsite.Models.Forum.ForumThreadRequestModel(),
         ConstantValues = new Dictionary<string, object>()
         {
-            {"ThreadId", Model.CurrentThread.ThreadId}
+            {"ThreadId", Model.CurrentThread.ThreadId},
+            {"CurrentPage", Model.CurrentPage}            
         },
         CurrentPage = Model.CurrentPage,
         MaxPage = Model.MaxPages,
         PageValueMember = "CurrentPage"
     });   
 }
-
-<a onclick="CreateNewOnClick()" href="#">Create New Reply</a>
-@{
-    Html.RenderAction("ForumCreateNewReply", new CincyGeeksWebsite.Models.Forum.PartialModels.CreateNewReplyRequestModel()
-    {
-        ThreadId = Model.CurrentThread.ThreadId,
-        ContainerName = "createNewReplyForm"
-    });
-}
-
-<div id="quoteDiv"  style="display:none;"></div>
-
 
 <p>
     @Html.ActionLink(String.Format("<< Back to {0}", Model.ParentTopic.TopicTitle), "ViewTopic", new { topicId = Model.ParentTopic.TopicId })

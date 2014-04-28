@@ -8,8 +8,8 @@ using System.Web.Mvc;
 using CincyGeeksWebsite.Data;
 using System.Configuration;
 using CincyGeeksWebsite.Utility;
-using CincyGeeksWebsite.Models.Forum.PartialModels;
 using System.IO;
+using System.Text;
 
 namespace CincyGeeksWebsite.Controllers
 {
@@ -203,7 +203,7 @@ namespace CincyGeeksWebsite.Controllers
 
         [HttpPost]
         [Authorize(Roles = "User")]
-        public ActionResult ViewThread(CreateNewReplyViewModel model)
+        public ActionResult ViewThread(ForumReplyModel model)
         {
             ViewThreadModel viewThreadModel = new ViewThreadModel()
             {
@@ -251,60 +251,7 @@ namespace CincyGeeksWebsite.Controllers
         }
 
         #region Partial Implentations
-        public PartialViewResult ForumCreateNewReply(CreateNewReplyRequestModel requestModel)
-        {
-            return PartialView("Partials/_CreateNewReplyPartial", new CreateNewReplyViewModel(){
-                ThreadId = requestModel.ThreadId,
-                ContainerName = requestModel.ContainerName
-            });
-        }
-
-        public PartialViewResult ForumQuoteAReply(CreateNewReplyRequestModel requestModel)
-        {
-            CreateNewReplyViewModel replyViewModel = new CreateNewReplyViewModel(){
-                ThreadId = requestModel.ThreadId,
-                ContainerName = requestModel.ContainerName
-            };
-
-            using (CGWebEntities entities = new CGWebEntities())
-            {
-                ForumReply selectedReply = entities.ForumReplies.Where(FR => FR.ReplyId.Equals(requestModel.ReplyId)).Single();
-                using (StringReader reader = new StringReader(selectedReply.ReplyContent))
-                {
-                    string line;
-                    while ((line = reader.ReadLine()) != null)
-                    {
-                        replyViewModel.ReplyContent += ">" + line;
-                    }
-                }
-            }
-
-            return PartialView("Partials/_CreateNewReplyPartial", replyViewModel);
-        }
-
-        public PartialViewResult ForumQuoteAThread(CreateNewReplyRequestModel requestModel)
-        {
-            CreateNewReplyViewModel replyViewModel = new CreateNewReplyViewModel()
-            {
-                ThreadId = requestModel.ThreadId,
-                ContainerName = requestModel.ContainerName
-            };
-
-            using (CGWebEntities entities = new CGWebEntities())
-            {
-                ForumThread selectedThread = entities.ForumThreads.Where(FT => FT.ThreadId.Equals(requestModel.ReplyId)).Single();
-                using (StringReader reader = new StringReader(selectedThread.ThreadContent))
-                {
-                    string line;
-                    while ((line = reader.ReadLine()) != null)
-                    {
-                        replyViewModel.ReplyContent += ">" + line;
-                    }
-                }
-            }
-
-            return PartialView("Partials/_CreateNewReplyPartial", replyViewModel);
-        }
+        
         #endregion
     }
 }

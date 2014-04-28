@@ -222,9 +222,6 @@
     <Compile Include="Models\Account\UsersContext.cs" />
     <Compile Include="Models\Administrative\RoleManagementModel.cs" />
     <Compile Include="Models\Administrative\UserDashboardModel.cs" />
-    <Compile Include="Models\Forum\PartialModels\CreateNewReplyModel.cs" />
-    <Compile Include="Models\Forum\PartialModels\CreateNewReplyRequestModel.cs" />
-    <Compile Include="Models\Forum\PartialModels\CreateNewThreadModel.cs" />
     <Compile Include="Models\Forum\ForumIndexModel.cs" />
     <Compile Include="Models\Forum\ForumThreadModel.cs" />
     <Compile Include="Models\Forum\ForumThreadRequestModel.cs" />
@@ -373,9 +370,11 @@
     <Content Include="Views\Forum\ViewTopic.cshtml" />
     <Content Include="Views\Forum\ViewThread.cshtml" />
     <Content Include="Views\Shared\_PaginatorPartial.cshtml" />
-    <Content Include="Views\Forum\Partials\_CreateNewReplyPartial.cshtml" />
+    <Content Include="Views\Forum\Partials\_Thread.cshtml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Models\Forum\PartialModels\" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>
